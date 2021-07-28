@@ -1,5 +1,5 @@
 ---
-name: Run tests and package firmware
+name: Run tests
 on:
   push:
     branches:
