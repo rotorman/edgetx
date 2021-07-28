@@ -82,6 +82,9 @@ case $FLAVOR in
     X7)
         BUILD_OPTIONS+="-DPCB=X7"
         ;;
+    X7_ACCESS)
+        BUILD_OPTIONS+="-DPCB=X7 -DPCBREV=ACCESS -DAUTOUPDATE=YES -DPXX1=YES"
+        ;;
     T12)
         BUILD_OPTIONS+="-DPCB=X7 -DPCBREV=T12 -DINTERNAL_MODULE_MULTI=ON"
         ;;
@@ -114,6 +117,9 @@ case $FLAVOR in
         ;;
     X10)
         BUILD_OPTIONS+="-DPCB=X10"
+        ;;
+    X10_ACCESS)
+        BUILD_OPTIONS+="-DPCB=X10 -DPCBREV=ACCESS -DPXX1=YES"
         ;;
     X12S)
         BUILD_OPTIONS+="-DPCB=X12S"
