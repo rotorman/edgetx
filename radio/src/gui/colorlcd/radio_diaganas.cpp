@@ -75,7 +75,7 @@ class RadioAnalogsDiagsWindow: public Window {
           drawHexNumber(dc, x + 3 * 15 - 1, y, anaIn(i));
           dc->drawNumber(x + ANA_OFFSET, y, (int16_t) calibratedAnalogs[CONVERT_MODE(i)] * 25 / 256, RIGHT);
         }
-#else				
+#else
       for (uint8_t i = 0; i < NUM_STICKS + NUM_POTS + NUM_SLIDERS; i++) {
 #if LCD_W > LCD_H
 					coord_t y = 1 + (i / 2) * FH;

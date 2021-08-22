@@ -328,7 +328,7 @@ void aux2SerialInit(unsigned int mode, unsigned int protocol)
 #if defined(DEBUG) || defined(CLI)
     case UART_MODE_DEBUG:
       aux2SerialSetup(DEBUG_BAUDRATE, false);
-      AUX2_SERIAL_POWER_OFF();
+      //AUX2_SERIAL_POWER_OFF(); // TODO! Remove comment
       break;
 #endif
 

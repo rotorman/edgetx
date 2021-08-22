@@ -34,7 +34,7 @@ void i2cInit()
   GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
   GPIO_Init(I2C_B1_WP_GPIO, &GPIO_InitStructure);
-  GPIO_ResetBits(I2C_B1_WP_GPIO, I2C_WP_GPIO_PIN);
+  GPIO_ResetBits(I2C_B1_WP_GPIO, I2C_B1_WP_GPIO_PIN);
 
   I2C_InitTypeDef I2C_InitStructure;
   I2C_InitStructure.I2C_ClockSpeed = I2C_B1_CLK_RATE;

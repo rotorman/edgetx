@@ -265,6 +265,8 @@ void boardInit()
 #if defined(RTCLOCK) && !defined(COPROCESSOR)
   rtcInit(); // RTC must be initialized before rambackupRestore() is called
 #endif
+
+  GPIO_SetBits(AUX2_SERIAL_PWR_GPIO, AUX2_SERIAL_PWR_GPIO_PIN); // Turn on AUX2 power - TODO! Remove
 }
 
 void boardOff()
