@@ -25,6 +25,14 @@
   #include "libopenui.h"
 #endif
 
+#if defined (FLYSKY_HALL_STICKS) || defined (FLYSKY_HALL_STICKS_REVERSED)
+#include "flyskyHallStick_driver.h"
+#endif
+
+#if defined (IMU_LSM6DS33)
+#include "imu_lsm6ds33.h"
+#endif
+
 uint8_t currentSpeakerVolume = 255;
 uint8_t requiredSpeakerVolume = 255;
 uint8_t currentBacklightBright = 0;
@@ -530,6 +538,16 @@ void perMain()
 
     drawFatalErrorScreen(STR_NO_SDCARD);
     return;
+  }
+#endif
+
+#if defined(IMU_LSM6DS33)
+  static TickType_t imu_lastsampled = RTOS_GET_TIME();
+  if (RTOS_GET_TIME() > imu_lastsampled + 10000) // run once every 10 seconds
+  {
+    imu_lastsampled = RTOS_GET_TIME();
+    imu_lsm6ds33_read();
+    TRACE(";%.2f;%i;%i;%i;%i;%.2f", IMUoutput.fTemperatureDegC, hall_raw_values[0], hall_raw_values[1], hall_raw_values[2], hall_raw_values[3], (float)getBatteryVoltage()/100.0);
   }
 #endif
 
