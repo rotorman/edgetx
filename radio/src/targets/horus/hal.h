@@ -279,13 +279,13 @@
   #define KEYS_GPIOD_PINS               (GPIO_Pin_11 | GPIO_Pin_3 | GPIO_Pin_7 | GPIO_Pin_13)
   #define KEYS_GPIOE_PINS               (GPIO_Pin_3)
   #define KEYS_GPIOG_PINS               (SWITCHES_GPIO_PIN_D_L | SWITCHES_GPIO_PIN_G_H | SWITCHES_GPIO_PIN_G_L | SWITCHES_GPIO_PIN_H | TRIMS_GPIO_PIN_LVD)
-  #if defined(RADIO_TX16S)
-    #define KEYS_GPIOA_PINS             (GPIO_Pin_6)
-    #define KEYS_GPIOC_PINS             (GPIO_Pin_4 | GPIO_Pin_13)
-    #define KEYS_GPIOH_PINS             (GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_14 | GPIO_Pin_15)
-  #else
-    #define KEYS_GPIOH_PINS             (GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_14 | GPIO_Pin_15)
-  #endif
+#if defined(RADIO_TX16S) || defined(RADIO_DEVKITV1)
+  #define KEYS_GPIOA_PINS               (GPIO_Pin_6)
+  #define KEYS_GPIOC_PINS               (GPIO_Pin_4 | GPIO_Pin_13)
+  #define KEYS_GPIOH_PINS               (GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_14 | GPIO_Pin_15)
+#else
+  #define KEYS_GPIOH_PINS               (GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_14 | GPIO_Pin_15)
+#endif
   #define KEYS_GPIOI_PINS               (GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_11 | GPIO_Pin_15)
   #define KEYS_GPIOJ_PINS               (SWITCHES_GPIO_PIN_D_H | TRIMS_GPIO_PIN_LVU | TRIMS_GPIO_PIN_RVD | TRIMS_GPIO_PIN_RVU | GPIO_Pin_8)
 #endif
@@ -426,8 +426,7 @@
     #define PCBREV_GPIO                 GPIOE
     #define PCBREV_VALUE()              (GPIO_ReadInputDataBit(PCBREV_GPIO, GPIO_Pin_4) + (GPIO_ReadInputDataBit(PCBREV_GPIO, GPIO_Pin_5) << 1))
   #endif
-#elif defined(PCBX10)
-  #define PCBREV_RCC_AHB1Periph         RCC_AHB1Periph_GPIOH
+#elif defined(PCBX10)  #define PCBREV_RCC_AHB1Periph         RCC_AHB1Periph_GPIOH
   #define PCBREV_GPIO_PIN               (GPIO_Pin_7 | GPIO_Pin_8)
   #define PCBREV_GPIO                   GPIOH
   #define PCBREV_VALUE()                (GPIO_ReadInputDataBit(PCBREV_GPIO, GPIO_Pin_7) + (GPIO_ReadInputDataBit(PCBREV_GPIO, GPIO_Pin_8) << 1))
