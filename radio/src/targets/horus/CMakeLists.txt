@@ -157,6 +157,43 @@ elseif (PCB STREQUAL X12S)
   add_definitions(-DMANUFACTURER_FRSKY)
 endif()
 
+if (PCB STREQUAL DEVKIT)
+  set(PCBREV "STD" CACHE STRING "PCB Revision")
+  add_definitions(-DPCBDEVKIT)
+  add_definitions(-DSOFTWARE_VOLUME)
+  set(TARGET_SRC
+    ${TARGET_SRC}
+    ../common/arm/stm32/audio_dac_driver.cpp
+    )
+  set(FIRMWARE_TARGET_SRC
+    ${FIRMWARE_TARGET_SRC}
+    ../common/arm/stm32/stm32_hal_adc.cpp
+    ../../hal/adc_driver.cpp
+    )
+  set(BITMAPS_TARGET x10_bitmaps)
+  set(FONTS_TARGET x10_fonts)
+  set(LCD_DRIVER lcd_driver.cpp)
+  set(LUA_EXPORT lua_export_x10)
+  if (PCBREV STREQUAL V1)
+    set(FLAVOUR devkitv1)
+    set(LUA_EXPORT lua_export_t16)
+    add_definitions(-DRADIO_DEVKITV1)
+    add_definitions(-DRADIO_FAMILY_T16)
+    set(DEFAULT_INTERNAL_MODULE MULTIMODULE CACHE STRING "Default internal module")
+    option(BLUETOOTH "Support for bluetooth module" OFF)
+    option(INTERNAL_GPS "Support for internal ublox GPS" OFF)
+    set(HARDWARE_TOUCH YES)
+    set(USB_CHARGER YES)
+    set(DEFAULT_THEME "DARKBLUE")
+    set(SBUS_TRAINER ON)
+    set(AUX_SERIAL ON)
+    if (NOT BLUETOOTH AND NOT INTERNAL_GPS)
+      set(AUX2_SERIAL ON)
+    endif()
+    set(INTERNAL_GPS_BAUDRATE "9600" CACHE STRING "Baud rate for internal GPS")
+  endif()
+endif()
+
 add_definitions(-DPCBREV=${PCBREV})
 add_definitions(-DPCBREV_${PCBREV})
 
@@ -196,7 +233,7 @@ if(HARDWARE_EXTERNAL_ACCESS_MOD)
   add_definitions(-DHARDWARE_EXTERNAL_ACCESS_MOD)
 endif()
 
-if(PCB STREQUAL X10)
+if(PCB STREQUAL X10 OR PCB STREQUAL DEVKIT)
   set(FLYSKY_HALL_STICKS_DRIVER flyskyHallStick_driver.cpp)
 endif()
 

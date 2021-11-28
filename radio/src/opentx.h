@@ -901,7 +901,7 @@ enum AUDIO_SOUNDS {
   AU_POT3_MIDDLE,
   AU_POT4_MIDDLE,
 #endif
-#if defined(PCBX10)
+#if defined(PCBX10) || defined(PCBDEVKIT)
   AU_POT4_MIDDLE,
   AU_POT5_MIDDLE,
   AU_POT6_MIDDLE,

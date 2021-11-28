@@ -219,7 +219,7 @@ const char * const audioFilenames[] = {
   "midpot3",
   "midpot4",
 #endif
-#if defined(PCBX10)
+#if defined(PCBX10) || defined(PCBDEVKIT)
   "midpot4",
   "midpot5",
   "midpot6",
@@ -535,7 +535,7 @@ void audioTask(void * pdata)
 
   setSampleRate(AUDIO_SAMPLE_RATE);
 
-#if defined(PCBX12S) || defined(RADIO_TX16S)
+#if defined(PCBX12S) || defined(RADIO_TX16S) || defined(RADIO_DEVKITV1)
   // The audio amp needs ~2s to start
   RTOS_WAIT_MS(1000); // 1s
 #elif defined(PCBNV14)
@@ -1142,7 +1142,7 @@ void audioEvent(unsigned int index)
       case AU_POT3_MIDDLE:
       case AU_POT4_MIDDLE:
 #endif
-#if defined(PCBX10)
+#if defined(PCBX10) || defined (PCBDEVKIT)
       case AU_POT4_MIDDLE:
       case AU_POT5_MIDDLE:
       case AU_POT6_MIDDLE:

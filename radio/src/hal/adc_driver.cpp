@@ -33,7 +33,7 @@ const etx_hal_adc_driver_t* etx_hal_adc_driver = nullptr;
   const int8_t adcDirection[NUM_ANALOGS] = {1,-1,1,-1,  1,1,1,   -1,1,1,1,  -1,1 };
 #elif defined(RADIO_T18)
   const int8_t adcDirection[NUM_ANALOGS] = {1,-1,1,-1, -1,1,-1,  -1,1,1,1,  -1,1 };
-#elif defined(RADIO_TX16S)
+#elif defined(RADIO_TX16S) || defined(RADIO_DEVKITV1)
   const int8_t adcDirection[NUM_ANALOGS] = {1,-1,1,-1,  1,1,1,   -1,1,1,1,  -1,1 };
 #elif defined(PCBX10)
   const int8_t adcDirection[NUM_ANALOGS] = {1,-1,1,-1,  -1,1,-1,  1,1,1,1,   1,-1 };
@@ -84,7 +84,7 @@ const etx_hal_adc_driver_t* etx_hal_adc_driver = nullptr;
 
 uint16_t adcValues[NUM_ANALOGS] __DMA;
 
-#if defined(PCBX10) || defined(PCBX12S)
+#if defined(PCBX10) || defined(PCBX12S) || defined(PCBDEVKIT)
 uint16_t rtcBatteryVoltage;
 #endif
 
@@ -170,7 +170,7 @@ uint16_t getRTCBatteryVoltage()
 {
 #if defined(HAS_TX_RTC_VOLTAGE)
   return (getAnalogValue(TX_RTC_VOLTAGE) * ADC_VREF_PREC2) / 2048;
-#elif defined(PCBX10) || defined(PCBX12S)
+#elif defined(PCBX10) || defined(PCBX12S) || defined(PCBDEVKIT)
   return (rtcBatteryVoltage * 2 * ADC_VREF_PREC2) / 2048;
 #elif defined(PCBNV14)
   #warning "TODO RTC voltage"

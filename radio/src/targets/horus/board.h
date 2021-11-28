@@ -95,7 +95,7 @@ enum {
 
 #if defined(SIMU)
   #define IS_FIRMWARE_COMPATIBLE_WITH_BOARD() true
-#elif defined(PCBX10)
+#elif defined(PCBX10) || defined (PCBDEVKIT)
   #if defined(PCBREV_EXPRESS)
     #define IS_FIRMWARE_COMPATIBLE_WITH_BOARD() (hardwareOptions.pcbrev == PCBREV_X10_EXPRESS)
   #elif defined(RADIO_FAMILY_T16)
@@ -349,7 +349,7 @@ void watchdogInit(unsigned int duration);
 
 // ADC driver
 
-#if defined(PCBX10)
+#if defined(PCBX10) || defined (PCBDEVKIT)
   #define NUM_POTS                     7
   #define STORAGE_NUM_POTS             7
 #else
@@ -359,9 +359,9 @@ void watchdogInit(unsigned int duration);
 
 #define NUM_XPOTS                      NUM_POTS
 
-#if defined(PCBX10)
+#if defined(PCBX10) || defined (PCBDEVKIT)
   #define NUM_SLIDERS                  2
-  #if defined(RADIO_TX16S) || defined(RADIO_T18) || defined(RADIO_T16)
+  #if defined(RADIO_TX16S) || defined(RADIO_T18) || defined(RADIO_T16) || defined(RADIO_DEVKITV1)
     #define NUM_PWMSTICKS              0
   #else
     #define NUM_PWMSTICKS              4
@@ -382,7 +382,7 @@ enum Analogs {
   POT1 = POT_FIRST,
   POT2,
   POT3,
-#if defined(PCBX10)
+#if defined(PCBX10) || defined (PCBDEVKIT)
   EXT1,
   EXT2,
   EXT3,
@@ -483,7 +483,7 @@ extern volatile uint32_t pwm_interrupt_count;
 #endif
 
 // Battery driver
-#if defined(PCBX10)
+#if defined(PCBX10) || defined (PCBDEVKIT)
   // Lipo 2S
   #define BATTERY_WARN      66 // 6.6V
   #define BATTERY_MIN       67 // 6.7V
@@ -552,7 +552,7 @@ void ledInit();
 void ledOff();
 void ledRed();
 void ledBlue();
-#if defined(PCBX10)
+#if defined(PCBX10) || defined (PCBDEVKIT)
   void ledGreen();
 #endif
 
@@ -620,6 +620,10 @@ void usbJoystickUpdate();
   #define USB_NAME                     "RM TX16S"
   #define USB_MANUFACTURER             'R', 'M', '_', 'T', 'X', ' ', ' ', ' '  /* 8 bytes */
   #define USB_PRODUCT                  'R', 'M', ' ', 'T', 'X', '1', '6', 'S'  /* 8 Bytes */
+#elif defined(RADIO_DEVKITV1)
+  #define USB_NAME                     "DEVKITV1"
+  #define USB_MANUFACTURER             'E', 'D', 'G', 'E', 'T', 'X', 'H', 'W'  /* 8 bytes */
+  #define USB_PRODUCT                  'D', 'E', 'V', 'K', 'I', 'T', 'V', '1'  /* 8 Bytes */
 #elif defined(PCBX10)
   #define USB_NAME                     "FrSky X10"
   #define USB_MANUFACTURER             'F', 'r', 'S', 'k', 'y', ' ', ' ', ' '  /* 8 bytes */
@@ -678,7 +682,7 @@ void sportUpdatePowerInit();
 #endif
 
 // Aux serial port driver
-#if defined(RADIO_TX16S)
+#if defined(RADIO_TX16S) || defined(RADIO_DEVKITV1)
   #define DEBUG_BAUDRATE                  400000
   #define LUA_DEFAULT_BAUDRATE            115200
 #else

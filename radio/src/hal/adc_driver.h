@@ -40,7 +40,7 @@
 #endif
 
 // TODO: get rid of this special case
-#if defined(PCBX10) || defined(PCBX12S)
+#if defined(PCBX10) || defined(PCBX12S) || defined(PCBDEVKIT)
 extern uint16_t rtcBatteryVoltage;
 #endif
 

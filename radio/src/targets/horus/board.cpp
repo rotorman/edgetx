@@ -340,7 +340,7 @@ void boardOff()
   }
 }
 
-#if defined (RADIO_TX16S)
+#if defined (RADIO_TX16S) || defined(RADIO_DEVKITV1)
   #define BATTERY_DIVIDER 1495
 #else
   #define BATTERY_DIVIDER 1629

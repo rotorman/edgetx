@@ -2861,7 +2861,7 @@ void OpenTxModelData::beforeExport()
   if (modelData.trainerMode > TRAINER_MODE_SLAVE_JACK) {
     if (!IS_TARANIS(board)) {
       modelData.trainerMode -= 2;
-      if (!IS_RADIOMASTER_TX16S(board))
+      if (!(IS_RADIOMASTER_TX16S(board) || IS_DEVKIT_V1(board)))
         modelData.trainerMode -= 1;
     }
   }
@@ -2901,7 +2901,7 @@ void OpenTxModelData::afterImport()
   if (modelData.trainerMode > TRAINER_MODE_SLAVE_JACK) {
     if (!IS_TARANIS(board)) {
       modelData.trainerMode += 2;
-      if (!IS_RADIOMASTER_TX16S(board))
+      if (!(IS_RADIOMASTER_TX16S(board) || IS_DEVKIT_V1(board)))
         modelData.trainerMode += 1;
     }
   }

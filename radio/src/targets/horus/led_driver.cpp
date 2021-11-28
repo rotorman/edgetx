@@ -55,7 +55,7 @@ void ledBlue()
   ledInit();
   GPIO_ResetBits(LED_GPIO, LED_GPIO_PIN);
 }
-#elif defined(PCBX10)
+#elif defined(PCBX10) || defined(PCBDEVKIT)
 void ledOff()
 {
   GPIO_ResetBits(LED_GPIO, LED_GPIO_PIN);

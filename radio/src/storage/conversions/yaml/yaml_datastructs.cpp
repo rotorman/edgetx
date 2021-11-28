@@ -39,7 +39,7 @@ namespace yaml_conv_220 {
 
 #if defined(PCBX12S)
  #include "yaml_datastructs_x12s.cpp"
-#elif defined(PCBX10)
+#elif defined(PCBX10) || defined (PCBDEVKIT)
  #include "yaml_datastructs_x10.cpp"
 #elif defined(PCBNV14)
  #include "yaml_datastructs_nv14.cpp"

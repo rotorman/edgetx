@@ -128,7 +128,7 @@ HardwarePanel::HardwarePanel(QWidget * parent, GeneralSettings & generalSettings
 
   if (firmware->getCapability(HasAuxSerialMode)) {
     QString lbl = "Serial Port";
-    if (IS_RADIOMASTER_TX16S(board))
+    if (IS_RADIOMASTER_TX16S(board) || IS_DEVKIT_V1(board))
       lbl.append(" (TTL)");
     addLabel(tr("%1").arg(lbl), row, 0);
     AutoComboBox *serialPortMode = new AutoComboBox(this);
@@ -139,7 +139,7 @@ HardwarePanel::HardwarePanel(QWidget * parent, GeneralSettings & generalSettings
 
   if (firmware->getCapability(HasAux2SerialMode)) {
     QString lbl = "Serial Port 2";
-    if (IS_RADIOMASTER_TX16S(board))
+    if (IS_RADIOMASTER_TX16S(board) || IS_DEVKIT_V1(board))
       lbl.append(" (TTL)");
     addLabel(tr("%1").arg(lbl), row, 0);
     AutoComboBox *serialPort2Mode = new AutoComboBox(this);
