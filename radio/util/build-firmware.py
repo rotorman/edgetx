@@ -178,6 +178,11 @@ def main():
         cmake_options["PCBREV"] = "TX16S"
         firmware_options = options_radiomaster_tx16s
         maxsize = 2 * 1024 * 1024
+    elif board_name == "devkitv1":
+            cmake_options["PCB"] = "DEVKIT"
+            cmake_options["PCBREV"] = "V1"
+            firmware_options = options_devkit
+            maxsize = 2 * 1024 * 1024
     else:
         return INVALID_BOARD
 

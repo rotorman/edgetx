@@ -1248,7 +1248,7 @@ class ModuleWindow : public FormGroup {
         edit->setSuffix(STR_MS);
         edit->setStep(SBUS_STEPSIZE);
         new Choice(this, grid.getFieldSlot(2, 1), STR_SBUS_INVERSION_VALUES, 0, 1, GET_SET_DEFAULT(g_model.moduleData[moduleIdx].sbus.noninverted));
-#if defined(RADIO_TX16S)
+#if defined(RADIO_TX16S) || defined(RADIO_DEVKITV1)
         grid.nextLine();
         new StaticText(this, grid.getFieldSlot(1, 0), STR_WARN_5VOLTS, 0, COLOR_THEME_PRIMARY1);
 #endif

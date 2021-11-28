@@ -23,7 +23,9 @@
 
 void hapticOff(void)
 {
+#if defined(HAPTIC_TIMER_COMPARE_VALUE)
   HAPTIC_TIMER_COMPARE_VALUE = 0;
+#endif
 }
 
 void hapticOn(uint32_t pwmPercent)
@@ -31,11 +33,14 @@ void hapticOn(uint32_t pwmPercent)
   if (pwmPercent > 100) {
     pwmPercent = 100;
   }
+#if defined(HAPTIC_TIMER_COMPARE_VALUE)
   HAPTIC_TIMER_COMPARE_VALUE = pwmPercent;
+#endif
 }
 
 void hapticInit(void)
 {
+#if defined(HAPTIC_GPIO_PIN) && defined(HAPTIC_GPIO) && defined(HAPTIC_GPIO_PinSource) && defined(HAPTIC_TIMER_MODE) && defined(HAPTIC_TIMER_OUTPUT_ENABLE) && defined(HAPTIC_GPIO_TIMER)
   GPIO_InitTypeDef GPIO_InitStructure;
   GPIO_InitStructure.GPIO_Pin = HAPTIC_GPIO_PIN;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
@@ -55,10 +60,13 @@ void hapticInit(void)
 
   HAPTIC_GPIO_TIMER->EGR = 0;
   HAPTIC_GPIO_TIMER->CR1 = TIM_CR1_CEN; // counter enable
+#endif
 }
 
 void hapticDone(void)
 {
   hapticOff();
+#if defined(HAPTIC_RCC_AHB1Periph)
   RCC_AHB1PeriphClockCmd(HAPTIC_RCC_AHB1Periph, DISABLE);
+#endif
 }

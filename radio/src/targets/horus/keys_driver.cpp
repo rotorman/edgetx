@@ -186,7 +186,9 @@ uint32_t switchState(uint8_t index)
     ADD_3POS_CASE(G, 6);
     ADD_2POS_CASE(H);
     ADD_2POS_CASE(I);
-    ADD_2POS_CASE(J);
+  #if !(defined(PCBDEVKIT) && defined(ETM_ACTIVE))
+      ADD_2POS_CASE(J);
+  #endif
 #endif
     default:
       break;

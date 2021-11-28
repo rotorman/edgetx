@@ -22,6 +22,7 @@
         ["RadioMaster TX12", "tx12-"],
         ["RadioMaster TX16S", "tx16s-"],
         ["RadioMaster Zorro","zorro-"]
+        ["DevKit V1.0", "devkitv1-"]
     ],
     "changelog": "- Major initial bug fixes"
 }

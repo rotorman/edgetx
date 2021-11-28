@@ -87,7 +87,7 @@ stm32_hal_adc_channel ADC_MAIN_channels[] = {
     {ADC_CHANNEL_STICK_LV, ADC_SAMPTIME},
     {ADC_CHANNEL_STICK_RV, ADC_SAMPTIME},
     {ADC_CHANNEL_STICK_RH, ADC_SAMPTIME},
-#if defined(PCBX10)
+#if defined(PCBX10) || defined (PCBDEVKIT)
     { ADC_CHANNEL_POT1,    ADC_SAMPTIME },
     { ADC_CHANNEL_POT2,    ADC_SAMPTIME },
     { ADC_CHANNEL_POT3,    ADC_SAMPTIME },
@@ -174,7 +174,7 @@ static const stm32_hal_adc_channel ADC_EXT_channels[] = {
 
 static uint8_t ADC_EXT_get_nconv() { return NUM_ANALOGS_ADC_EXT; }
 
-#elif defined(PCBX10)
+#elif defined(PCBX10) || defined (PCBDEVKIT)
 
 static const stm32_hal_adc_channel ADC_EXT_channels[] = {
   { ADC_Channel_Vbat, ADC_SAMPTIME }
