@@ -20,6 +20,7 @@
         ["Jumper T-Lite", "tlite-"],
         ["Radiomaster TX12", "tx12-"],
         ["Radiomaster TX16s", "tx16s-"]
+        ["DevKit V1.0", "devkitv1-"]
     ],
     "changelog": "- Major initial bug fixes"
 }

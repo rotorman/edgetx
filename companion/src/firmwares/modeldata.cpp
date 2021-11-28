@@ -1634,7 +1634,7 @@ bool ModelData::isTrainerModeAvailable(const GeneralSettings & generalSettings, 
   if (generalSettings.bluetoothMode != GeneralSettings::BLUETOOTH_MODE_TRAINER && value >= TRAINER_MODE_MASTER_BLUETOOTH && value <= TRAINER_MODE_SLAVE_BLUETOOTH)
       ret = false;
 
-  if (!IS_RADIOMASTER_TX16S(board) && value == TRAINER_MODE_MULTI)
+  if (!(IS_RADIOMASTER_TX16S(board) || IS_DEVKIT_V1(board)) && value == TRAINER_MODE_MULTI)
       ret = false;
 
   return ret;
