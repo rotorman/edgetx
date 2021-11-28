@@ -24,12 +24,24 @@
 void ledInit()
 {
   GPIO_InitTypeDef GPIO_InitStructure;
-  GPIO_InitStructure.GPIO_Pin = LED_GPIO_PIN;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+
+#if defined(PCBDEVKIT)
+  GPIO_InitStructure.GPIO_Pin = LED_RED_GPIO_PIN;
+  GPIO_Init(LED_RED_GPIO, &GPIO_InitStructure);
+
+  GPIO_InitStructure.GPIO_Pin = LED_GREEN_GPIO_PIN;
+  GPIO_Init(LED_GREEN_GPIO, &GPIO_InitStructure);
+
+  GPIO_InitStructure.GPIO_Pin = LED_BLUE_GPIO_PIN;
+  GPIO_Init(LED_BLUE_GPIO, &GPIO_InitStructure);
+#else
+  GPIO_InitStructure.GPIO_Pin = LED_GPIO_PIN;
   GPIO_Init(LED_GPIO, &GPIO_InitStructure);
+#endif
 }
 
 #if defined(PCBX12S)
@@ -54,6 +66,34 @@ void ledBlue()
 {
   ledInit();
   GPIO_ResetBits(LED_GPIO, LED_GPIO_PIN);
+}
+#elif defined(PCBDEVKIT)
+void ledOff()
+{
+  GPIO_ResetBits(LED_RED_GPIO, LED_RED_GPIO_PIN);
+  GPIO_ResetBits(LED_GREEN_GPIO, LED_GREEN_GPIO_PIN);
+  GPIO_ResetBits(LED_BLUE_GPIO, LED_BLUE_GPIO_PIN);
+}
+
+void ledRed()
+{
+  GPIO_ResetBits(LED_GREEN_GPIO, LED_GREEN_GPIO_PIN);
+  GPIO_ResetBits(LED_BLUE_GPIO, LED_BLUE_GPIO_PIN);
+  GPIO_SetBits(LED_RED_GPIO, LED_RED_GPIO_PIN);
+}
+
+void ledGreen()
+{
+  GPIO_ResetBits(LED_RED_GPIO, LED_RED_GPIO_PIN);
+  GPIO_ResetBits(LED_BLUE_GPIO, LED_BLUE_GPIO_PIN);
+  GPIO_SetBits(LED_GREEN_GPIO, LED_GREEN_GPIO_PIN);
+}
+
+void ledBlue()
+{
+  GPIO_ResetBits(LED_RED_GPIO, LED_RED_GPIO_PIN);
+  GPIO_ResetBits(LED_GREEN_GPIO, LED_GREEN_GPIO_PIN);
+  GPIO_SetBits(LED_BLUE_GPIO, LED_BLUE_GPIO_PIN);
 }
 #elif defined(PCBX10)
 void ledOff()

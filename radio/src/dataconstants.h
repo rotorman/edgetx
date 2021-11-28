@@ -604,7 +604,7 @@ enum MixSources {
   MIXSRC_S1 = MIXSRC_FIRST_POT,         LUA_EXPORT("s1", "Potentiometer S1")
   MIXSRC_6POS,                          LUA_EXPORT("6pos", "Multipos Switch")
   MIXSRC_S2,                            LUA_EXPORT("s2", "Potentiometer S2")
-#if defined(PCBX10)
+#if defined(PCBX10) || defined(PCBDEVKIT)
   MIXSRC_EXT1,                          LUA_EXPORT("ext1", "Ext 1")
   MIXSRC_EXT2,                          LUA_EXPORT("ext2", "Ext 2")
   MIXSRC_EXT3,                          LUA_EXPORT("ext3", "Ext 3")

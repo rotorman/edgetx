@@ -59,7 +59,7 @@ int convertSource_218_to_219(int source)
     source += 2;
 #endif
 
-#if defined(PCBX10)
+#if defined(PCBX10) || defined (PCBDEVKIT)
   if (source == MIXSRC_EXT1 || source == MIXSRC_EXT2)
     source += 2;
 #endif
@@ -98,7 +98,7 @@ int convertSwitch_218_to_219(int swtch)
     swtch += 2 * 3;
 #endif
 
-#if defined(PCBX10)
+#if defined(PCBX10) || defined (PCBDEVKIT)
   if (swtch >= SWSRC_FIRST_MULTIPOS_SWITCH + 3 * XPOTS_MULTIPOS_COUNT)
     swtch += 2 * XPOTS_MULTIPOS_COUNT;
 #endif
@@ -213,7 +213,7 @@ void convertModelData_218_to_219(ModelData &model)
   }
 
   newModel.thrTraceSrc = oldModel.thrTraceSrc;
-#if defined(PCBX10)
+#if defined(PCBX10) || defined (PCBDEVKIT)
   if (newModel.thrTraceSrc > 3) // 0=Thr, 1/2/3=Old 3 Pots, then Sliders
     newModel.thrTraceSrc += 2;
 #endif

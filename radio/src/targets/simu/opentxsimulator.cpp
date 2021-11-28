@@ -667,7 +667,7 @@ class OpenTxSimulatorFactory: public SimulatorFactory
     {
 #if defined(PCBX12S)
       return Board::BOARD_HORUS_X12S;
-#elif defined(PCBX10)
+#elif defined(PCBX10) || defined(PCBDEVKIT)
       return Board::BOARD_X10;
 #elif defined(PCBX7ACCESS)
       return Board::BOARD_TARANIS_X7_ACCESS;

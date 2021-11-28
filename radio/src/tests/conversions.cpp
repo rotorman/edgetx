@@ -436,7 +436,7 @@ TEST(Conversions, ConversionX12SFrom23)
 }
 #endif
 
-#if defined(RADIO_TX16S)
+#if defined(RADIO_TX16S) || defined(RADIO_DEVKITV1)
 TEST(Conversions, ConversionTX16SFrom25)
 {
   simuFatfsSetPaths(TESTS_BUILD_PATH "/model_25_tx16s/", TESTS_BUILD_PATH "/model_25_tx16s/");
