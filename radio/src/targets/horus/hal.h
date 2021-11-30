@@ -402,7 +402,15 @@
   #define LED_RCC_AHB1Periph            RCC_AHB1Periph_GPIOI
   #define LED_GPIO                      GPIOI
   #define LED_GPIO_PIN                  GPIO_Pin_5  // PI.05
-#elif defined(PCBX10) || defined(PCBDEVKIT)
+#elif defined(PCBDEVKIT)
+  #define LED_RCC_AHB1Periph            (RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOE)
+  #define LED_RED_GPIO                  GPIOA
+  #define LED_RED_GPIO_PIN              GPIO_Pin_5
+  #define LED_GREEN_GPIO                GPIOE
+  #define LED_GREEN_GPIO_PIN            GPIO_Pin_4
+  #define LED_BLUE_GPIO                 GPIOE
+  #define LED_BLUE_GPIO_PIN             GPIO_Pin_5
+#elif defined(PCBX10)
   #define LED_RCC_AHB1Periph            RCC_AHB1Periph_GPIOE
   #define LED_GPIO                      GPIOE
   #define LED_RED_GPIO_PIN              GPIO_Pin_2
