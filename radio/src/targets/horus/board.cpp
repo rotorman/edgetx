@@ -115,7 +115,9 @@ void sportUpdatePowerInit()
 void boardInit()
 {
   RCC_AHB1PeriphClockCmd(PWR_RCC_AHB1Periph |
+#if defined(PCBREV_RCC_AHB1Periph)
                          PCBREV_RCC_AHB1Periph |
+#endif
                          LED_RCC_AHB1Periph |
                          LCD_RCC_AHB1Periph |
                          BACKLIGHT_RCC_AHB1Periph |
