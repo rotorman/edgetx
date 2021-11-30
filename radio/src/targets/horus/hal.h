@@ -24,6 +24,11 @@
 
 #define CPU_FREQ                        168000000
 
+#if defined(PCBDEVKIT)
+// Comment next line if NOT using Embedded Trace Macrocell on DevKit
+#define ETM_ACTIVE
+#endif
+
 // Keys
 #define KEYS_RCC_AHB1Periph             (RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_GPIOC | RCC_AHB1Periph_GPIOD | RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOG | RCC_AHB1Periph_GPIOH | RCC_AHB1Periph_GPIOI | RCC_AHB1Periph_GPIOJ)
 #if defined(PCBX12S)
@@ -384,7 +389,14 @@
 #endif
 
 // PCBREV
-#if defined(PCBX10) || defined(PCBDEVKIT)
+#if defined(PCBDEVKIT)
+  #if !defined(ETM_ACTIVE)
+    #define PCBREV_RCC_AHB1Periph       RCC_AHB1Periph_GPIOE
+    #define PCBREV_GPIO_PIN             (GPIO_Pin_4 | GPIO_Pin_5)
+    #define PCBREV_GPIO                 GPIOE
+    #define PCBREV_VALUE()              (GPIO_ReadInputDataBit(PCBREV_GPIO, GPIO_Pin_4) + (GPIO_ReadInputDataBit(PCBREV_GPIO, GPIO_Pin_5) << 1))
+  #endif
+#elif defined(PCBX10)
   #define PCBREV_RCC_AHB1Periph         RCC_AHB1Periph_GPIOH
   #define PCBREV_GPIO_PIN               (GPIO_Pin_7 | GPIO_Pin_8)
   #define PCBREV_GPIO                   GPIOH
