@@ -426,7 +426,8 @@
     #define PCBREV_GPIO                 GPIOE
     #define PCBREV_VALUE()              (GPIO_ReadInputDataBit(PCBREV_GPIO, GPIO_Pin_4) + (GPIO_ReadInputDataBit(PCBREV_GPIO, GPIO_Pin_5) << 1))
   #endif
-#elif defined(PCBX10)  #define PCBREV_RCC_AHB1Periph         RCC_AHB1Periph_GPIOH
+#elif defined(PCBX10)
+  #define PCBREV_RCC_AHB1Periph         RCC_AHB1Periph_GPIOH
   #define PCBREV_GPIO_PIN               (GPIO_Pin_7 | GPIO_Pin_8)
   #define PCBREV_GPIO                   GPIOH
   #define PCBREV_VALUE()                (GPIO_ReadInputDataBit(PCBREV_GPIO, GPIO_Pin_7) + (GPIO_ReadInputDataBit(PCBREV_GPIO, GPIO_Pin_8) << 1))
