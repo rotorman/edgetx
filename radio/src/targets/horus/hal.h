@@ -122,8 +122,13 @@
 #define HARDWARE_SWITCH_E
 #define SWITCHES_GPIO_REG_E_H           GPIOH->IDR
 #define SWITCHES_GPIO_PIN_E_H           GPIO_Pin_4  // PH.04
-#define SWITCHES_GPIO_REG_E_L           GPIOE->IDR
-#define SWITCHES_GPIO_PIN_E_L           GPIO_Pin_3  // PE.03
+#if defined(PCBDEVKIT)
+  #define SWITCHES_GPIO_REG_E_L         GPIOH->IDR
+  #define SWITCHES_GPIO_PIN_E_L         GPIO_Pin_7  // PH.07
+#else
+  #define SWITCHES_GPIO_REG_E_L         GPIOE->IDR
+  #define SWITCHES_GPIO_PIN_E_L         GPIO_Pin_3  // PE.03
+#endif
 #define STORAGE_SWITCH_F
 #define HARDWARE_SWITCH_F
 #define SWITCHES_GPIO_REG_F             GPIOH->IDR
