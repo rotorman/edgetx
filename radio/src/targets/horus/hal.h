@@ -901,8 +901,13 @@
 #define INTMODULE_RCC_APB2Periph      RCC_APB2Periph_USART1
 
 // External Module
-#define EXTMODULE_PWR_GPIO                 GPIOB
-#define EXTMODULE_PWR_GPIO_PIN             GPIO_Pin_3  // PB.03
+#if defined(PCBDEVKIT)
+  #define EXTMODULE_PWR_GPIO               GPIOH
+  #define EXTMODULE_PWR_GPIO_PIN           GPIO_Pin_15  // PH.15
+#else
+  #define EXTMODULE_PWR_GPIO               GPIOB
+  #define EXTMODULE_PWR_GPIO_PIN           GPIO_Pin_3  // PB.03
+#endif
 #define EXTERNAL_MODULE_PWR_OFF()          GPIO_ResetBits(EXTMODULE_PWR_GPIO, EXTMODULE_PWR_GPIO_PIN)
 #if (defined(PCBX10) && defined(PCBREV_EXPRESS)) || defined(HARDWARE_EXTERNAL_ACCESS_MOD)
   #define EXTMODULE_RCC_AHB1Periph         (RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_DMA1)
