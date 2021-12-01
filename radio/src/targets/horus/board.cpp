@@ -139,7 +139,9 @@ void boardInit()
                          TRAINER_RCC_AHB1Periph |
                          BT_RCC_AHB1Periph |
                          AUDIO_RCC_AHB1Periph |
+#if defined(HAPTIC_RCC_AHB1Periph)
                          HAPTIC_RCC_AHB1Periph |
+#endif
                          INTMODULE_RCC_AHB1Periph |
                          EXTMODULE_RCC_AHB1Periph |
                          I2C_B1_RCC_AHB1Periph |
@@ -177,7 +179,9 @@ void boardInit()
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG |
                          LCD_RCC_APB2Periph |
                          ADC_RCC_APB2Periph |
+#if defined(HAPTIC_RCC_APB2Periph)
                          HAPTIC_RCC_APB2Periph |
+#endif
                          INTMODULE_RCC_APB2Periph |
                          EXTMODULE_RCC_APB2Periph |
                          TELEMETRY_RCC_APB2Periph |
