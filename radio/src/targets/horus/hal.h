@@ -477,11 +477,15 @@
   #define AUX_SERIAL_USART_IRQn               USART3_IRQn
   #define AUX_SERIAL_DMA_Stream_RX            DMA1_Stream1
   #define AUX_SERIAL_DMA_Channel_RX           DMA_Channel_4
-#if defined(RADIO_TX16S) || defined(RADIO_DEVKITV1)
-  #define AUX_SERIAL_PWR_GPIO                 GPIOA
-  #define AUX_SERIAL_PWR_GPIO_PIN             GPIO_Pin_15  // PA.15
-  #define TRAINER_BATTERY_COMPARTMENT         // allows serial port TTL trainer
-#endif
+  #if defined(RADIO_DEVKITV1)
+    #define AUX_SERIAL_PWR_GPIO               GPIOH
+    #define AUX_SERIAL_PWR_GPIO_PIN           GPIO_Pin_13  // PH.13
+    #define TRAINER_BATTERY_COMPARTMENT       // allows serial port TTL trainer
+  #elif defined(RADIO_TX16S)
+    #define AUX_SERIAL_PWR_GPIO               GPIOA
+    #define AUX_SERIAL_PWR_GPIO_PIN           GPIO_Pin_15  // PA.15
+    #define TRAINER_BATTERY_COMPARTMENT       // allows serial port TTL trainer
+  #endif
 #else
   #define AUX_SERIAL_RCC_AHB1Periph           0
   #define AUX_SERIAL_RCC_APB1Periph           0
