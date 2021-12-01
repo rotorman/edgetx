@@ -144,7 +144,20 @@
 #define SWITCHES_GPIO_REG_H             GPIOG->IDR
 #define SWITCHES_GPIO_PIN_H             GPIO_Pin_7  // PG.07
 
-#if defined(PCBX10) || defined(PCBDEVKIT)
+#if defined(PCBDEVKIT)
+  // Gimbal switch left
+  #define STORAGE_SWITCH_I
+  #define HARDWARE_SWITCH_I
+  #define SWITCHES_GPIO_REG_I           GPIOH->IDR
+  #define SWITCHES_GPIO_PIN_I           GPIO_Pin_14  // PH.14
+  #define STORAGE_SWITCH_J
+  #if !defined(ETM_ACTIVE)
+    // Gimbal switch right (only available without ETM)
+    #define HARDWARE_SWITCH_J
+    #define SWITCHES_GPIO_REG_J         GPIOE->IDR
+    #define SWITCHES_GPIO_PIN_J         GPIO_Pin_3  // PE.03
+  #endif
+#elif defined(PCBX10)
   // Gimbal switch left
   #define STORAGE_SWITCH_I
   #define HARDWARE_SWITCH_I
@@ -245,8 +258,20 @@
   #define KEYS_GPIOH_PINS               (GPIO_Pin_9 | GPIO_Pin_12 | SWITCHES_GPIO_PIN_E_H | SWITCHES_GPIO_PIN_F | ROTARY_ENCODER_GPIO_PIN_A | ROTARY_ENCODER_GPIO_PIN_B)
   #define KEYS_GPIOI_PINS               (KEYS_GPIO_PIN_PGDN | KEYS_GPIO_PIN_LEFT | KEYS_GPIO_PIN_DOWN | SWITCHES_GPIO_PIN_A_L | GPIO_Pin_4)
   #define KEYS_GPIOJ_PINS               (SWITCHES_GPIO_PIN_D_H | TRIMS_GPIO_PIN_RVU | TRIMS_GPIO_PIN_LVD | TRIMS_GPIO_PIN_LVU | TRIMS_GPIO_PIN_RSD)
-#elif defined(PCBX10) || defined(PCBDEVKIT)
-  #if defined(RADIO_TX16S) || defined (RADIO_DEVKITV1)
+#elif defined(PCBDEVKIT)
+  #define KEYS_GPIOA_PINS               (GPIO_Pin_6)
+  #define KEYS_GPIOB_PINS               (GPIO_Pin_12 | GPIO_Pin_15 | GPIO_Pin_14 | GPIO_Pin_13)
+  #define KEYS_GPIOC_PINS               (GPIO_Pin_4 | GPIO_Pin_13)
+  #define KEYS_GPIOD_PINS               (GPIO_Pin_11 | GPIO_Pin_3 | GPIO_Pin_7 | GPIO_Pin_13)
+  #if !defined(ETM_ACTIVE)
+    #define KEYS_GPIOE_PINS             (SWITCHES_GPIO_PIN_J)
+  #endif
+  #define KEYS_GPIOG_PINS               (SWITCHES_GPIO_PIN_D_L | SWITCHES_GPIO_PIN_G_H | SWITCHES_GPIO_PIN_G_L | SWITCHES_GPIO_PIN_H | TRIMS_GPIO_PIN_LVD)
+  #define KEYS_GPIOH_PINS               (GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_7 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_14 | GPIO_Pin_15)
+  #define KEYS_GPIOI_PINS               (GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_11 | GPIO_Pin_15)
+  #define KEYS_GPIOJ_PINS               (SWITCHES_GPIO_PIN_D_H | TRIMS_GPIO_PIN_LVU | TRIMS_GPIO_PIN_RVD | TRIMS_GPIO_PIN_RVU | GPIO_Pin_8)
+#elif defined(PCBX10)
+  #if defined(RADIO_TX16S)
     #define KEYS_GPIOB_PINS             (GPIO_Pin_12 | GPIO_Pin_15 | GPIO_Pin_14 | GPIO_Pin_13)
   #else
     #define KEYS_GPIOB_PINS             (GPIO_Pin_12 | GPIO_Pin_15 | GPIO_Pin_14 | GPIO_Pin_13 | GPIO_Pin_8 | GPIO_Pin_9)
@@ -254,13 +279,13 @@
   #define KEYS_GPIOD_PINS               (GPIO_Pin_11 | GPIO_Pin_3 | GPIO_Pin_7 | GPIO_Pin_13)
   #define KEYS_GPIOE_PINS               (GPIO_Pin_3)
   #define KEYS_GPIOG_PINS               (SWITCHES_GPIO_PIN_D_L | SWITCHES_GPIO_PIN_G_H | SWITCHES_GPIO_PIN_G_L | SWITCHES_GPIO_PIN_H | TRIMS_GPIO_PIN_LVD)
-#if defined(RADIO_TX16S) || defined(RADIO_DEVKITV1)
-  #define KEYS_GPIOA_PINS               (GPIO_Pin_6)
-  #define KEYS_GPIOC_PINS               (GPIO_Pin_4 | GPIO_Pin_13)
-  #define KEYS_GPIOH_PINS               (GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_14 | GPIO_Pin_15)
-#else
-  #define KEYS_GPIOH_PINS               (GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_14 | GPIO_Pin_15)
-#endif
+  #if defined(RADIO_TX16S)
+    #define KEYS_GPIOA_PINS             (GPIO_Pin_6)
+    #define KEYS_GPIOC_PINS             (GPIO_Pin_4 | GPIO_Pin_13)
+    #define KEYS_GPIOH_PINS             (GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_14 | GPIO_Pin_15)
+  #else
+    #define KEYS_GPIOH_PINS             (GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_14 | GPIO_Pin_15)
+  #endif
   #define KEYS_GPIOI_PINS               (GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_11 | GPIO_Pin_15)
   #define KEYS_GPIOJ_PINS               (SWITCHES_GPIO_PIN_D_H | TRIMS_GPIO_PIN_LVU | TRIMS_GPIO_PIN_RVD | TRIMS_GPIO_PIN_RVU | GPIO_Pin_8)
 #endif
@@ -787,7 +812,20 @@
   #define HAPTIC_TIMER_OUTPUT_ENABLE    TIM_CCER_CC1E
   #define HAPTIC_TIMER_MODE             TIM_CCMR1_OC1M_1 | TIM_CCMR1_OC1M_2
   #define HAPTIC_TIMER_COMPARE_VALUE    HAPTIC_GPIO_TIMER->CCR1
-#elif defined(PCBX10) || defined(PCBDEVKIT)
+#elif defined(PCBDEVKIT)
+  #if !defined(ETM_ACTIVE)
+    #define HAPTIC_RCC_AHB1Periph       RCC_AHB1Periph_GPIOE
+    #define HAPTIC_RCC_APB2Periph       RCC_APB2ENR_TIM9EN
+    #define HAPTIC_GPIO                 GPIOE
+    #define HAPTIC_GPIO_PIN             GPIO_Pin_6  // PE.06
+    #define HAPTIC_GPIO_TIMER           TIM9
+    #define HAPTIC_GPIO_AF              GPIO_AF_TIM9
+    #define HAPTIC_GPIO_PinSource       GPIO_PinSource6
+    #define HAPTIC_TIMER_OUTPUT_ENABLE  TIM_CCER_CC2E
+    #define HAPTIC_TIMER_MODE           TIM_CCMR1_OC2M_1 | TIM_CCMR1_OC2M_2
+    #define HAPTIC_TIMER_COMPARE_VALUE  HAPTIC_GPIO_TIMER->CCR2
+  #endif
+#elif defined(PCBX10)
   #define HAPTIC_RCC_AHB1Periph         RCC_AHB1Periph_GPIOE
   #define HAPTIC_RCC_APB2Periph         RCC_APB2ENR_TIM9EN
   #define HAPTIC_GPIO                   GPIOE
@@ -798,6 +836,9 @@
   #define HAPTIC_TIMER_OUTPUT_ENABLE    TIM_CCER_CC2E
   #define HAPTIC_TIMER_MODE             TIM_CCMR1_OC2M_1 | TIM_CCMR1_OC2M_2
   #define HAPTIC_TIMER_COMPARE_VALUE    HAPTIC_GPIO_TIMER->CCR2
+#endif
+
+#if defined(PCBX10) || defined(PCBDEVKIT)
   // FlySky Hall Sticks
   #define FLYSKY_HALL_SERIAL_USART                 UART4
   #define FLYSKY_HALL_SERIAL_GPIO                  GPIOA
