@@ -35,10 +35,6 @@
 #include "telemetry/mavlink/mavlink_telem.h"
 #endif
 
-#if defined(TELEMETRY_MAVLINK)
-#include "telemetry/mavlink/mavlink_telem.h"
-#endif
-
 extern uint16_t get_flysky_hall_adc_value(uint8_t ch);
 
 RadioData  g_eeGeneral;
