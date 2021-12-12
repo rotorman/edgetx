@@ -31,6 +31,10 @@
   #include "view_text.h"
 #endif
 
+#if defined(TELEMETRY_MAVLINK)
+#include "telemetry/mavlink/mavlink_telem.h"
+#endif
+
 #if defined(PCBSKY9X)
 #include "audio_driver.h"
 #endif
@@ -229,6 +233,10 @@ void per10ms()
 #endif
 
   outputTelemetryBuffer.per10ms();
+
+#if defined(TELEMETRY_MAVLINK)
+  mavlinkTelem.tick10ms();
+#endif
 
   heartbeat |= HEART_TIMER_10MS;
 }
