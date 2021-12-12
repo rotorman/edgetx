@@ -61,6 +61,14 @@ extern RTOS_TASK_HANDLE cliTaskId;
 extern RTOS_DEFINE_STACK(cliStack, CLI_STACK_SIZE);
 #endif
 
+#if defined(TELEMETRY_MAVLINK)
+#define MAVLINK_STACK_SIZE       (400) //consumes 4x
+#define MAVLINK_TASK_PRIO        (tskIDLE_PRIORITY + 3)
+
+extern RTOS_TASK_HANDLE mavlinkTaskId;
+extern RTOS_DEFINE_STACK(mavlinkStack, MAVLINK_STACK_SIZE);
+#endif
+
 void stackPaint();
 void tasksStart();
 

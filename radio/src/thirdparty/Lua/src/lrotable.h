@@ -28,6 +28,10 @@ extern const luaR_value_entry baselib_vals[];
 extern const luaR_value_entry mathlib_vals[];
 extern const luaR_value_entry opentxConstants[];
 extern const luaR_string_entry edgetxStrings[];
+#if defined(TELEMETRY_MAVLINK)
+extern const luaR_value_entry mavlinkConstants[];
+extern const luaR_value_entry mavsdkConstants[];
+#endif
 
 // A mapping between table name and its entries
 typedef struct

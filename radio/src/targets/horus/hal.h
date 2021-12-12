@@ -412,7 +412,7 @@
 #endif
 
 // Serial Port (DEBUG)
-#if (defined(PCBX12S) || (defined(RADIO_TX16S)) && !defined(HARDWARE_EXTERNAL_ACCESS_MOD)) && !defined(IMU_LSM6DS33)
+#if defined(AUX_SERIAL) && !defined(HARDWARE_EXTERNAL_ACCESS_MOD) && !defined(IMU_LSM6DS33)
   #define AUX_SERIAL_RCC_AHB1Periph           (RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_DMA1)
   #define AUX_SERIAL_RCC_APB1Periph           RCC_APB1Periph_USART3
   #define AUX_SERIAL_RCC_APB2Periph           0
@@ -428,14 +428,18 @@
   #define AUX_SERIAL_DMA_Stream_RX            DMA1_Stream1
   #define AUX_SERIAL_DMA_Channel_RX           DMA_Channel_4
 #if defined(RADIO_TX16S)
+  #define AUX_SERIAL_PWR_RCC_AHB1Periph       RCC_AHB1Periph_GPIOA
   #define AUX_SERIAL_PWR_GPIO                 GPIOA
   #define AUX_SERIAL_PWR_GPIO_PIN             GPIO_Pin_15  // PA.15
   #define TRAINER_BATTERY_COMPARTMENT         // allows serial port TTL trainer
+#else
+  #define AUX_SERIAL_PWR_RCC_AHB1Periph       0
 #endif
 #else
   #define AUX_SERIAL_RCC_AHB1Periph           0
   #define AUX_SERIAL_RCC_APB1Periph           0
   #define AUX_SERIAL_RCC_APB2Periph           0
+  #define AUX_SERIAL_PWR_RCC_AHB1Periph       0
 #endif
 
 #if defined(AUX2_SERIAL)
@@ -453,10 +457,13 @@
   #define AUX2_SERIAL_USART_IRQHandler         USART6_IRQHandler
   #define AUX2_SERIAL_DMA_Stream_RX            DMA2_Stream1 // or DMA2_Stream2
   #define AUX2_SERIAL_DMA_Channel_RX           DMA_Channel_5
+#if defined(RADIO_TX16S)
+  #define AUX2_SERIAL_PWR_RCC_AHB1Periph       RCC_AHB1Periph_GPIOB  
   #define AUX2_SERIAL_PWR_GPIO                 GPIOB
   #define AUX2_SERIAL_PWR_GPIO_PIN             GPIO_Pin_0  // PB.00
-#if defined(RADIO_TX16S)
   #define TRAINER_BATTERY_COMPARTMENT         // allows serial port TTL trainer
+#else
+  #define AUX2_SERIAL_PWR_RCC_AHB1Periph       0  
 #endif
 #elif defined(RADIO_TX16S) && defined(INTERNAL_GPS)
   #define GPS_RCC_AHB1Periph                   (RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_GPIOG)
@@ -476,10 +483,12 @@
   #define AUX2_SERIAL_RCC_AHB1Periph           0
   #define AUX2_SERIAL_RCC_APB1Periph           0
   #define AUX2_SERIAL_RCC_APB2Periph           0
+  #define AUX2_SERIAL_PWR_RCC_AHB1Periph       0
 #else
   #define AUX2_SERIAL_RCC_AHB1Periph           0
   #define AUX2_SERIAL_RCC_APB1Periph           0
   #define AUX2_SERIAL_RCC_APB2Periph           0
+  #define AUX2_SERIAL_PWR_RCC_AHB1Periph       0
 #endif
 
 // Telemetry
