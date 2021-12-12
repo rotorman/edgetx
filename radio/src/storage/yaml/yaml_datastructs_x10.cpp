@@ -91,6 +91,9 @@ const struct YamlIdStr enum_UartModes[] = {
   {  UART_MODE_TELEMETRY, "MODE_TELEMETRY"  },
   {  UART_MODE_SBUS_TRAINER, "MODE_SBUS_TRAINER"  },
   {  UART_MODE_LUA, "MODE_LUA"  },
+#if defined(TELEMETRY_MAVLINK)
+  {  UART_MODE_MAVLINK, "MODE_MAVLINK"  },
+#endif
   {  0, NULL  }
 };
 const struct YamlIdStr enum_ZoneOptionValueEnum[] = {
@@ -464,6 +467,11 @@ static const struct YamlNode struct_RadioData[] = {
   YAML_STRUCT("themeData", 480, struct_OpenTxTheme__PersistentData, NULL),
   YAML_STRING("ownerRegistrationID", 8),
   YAML_SIGNED( "uartSampleMode", 2 ),
+#if defined(TELEMETRY_MAVLINK)
+  YAML_UNSIGNED( "mavlinkBaudrate", 3 ),
+  YAML_UNSIGNED( "mavlinkBaudrate2", 3 ),
+  YAML_PADDING( 2 ),
+#endif  
   YAML_END
 };
 static const struct YamlNode struct_unsigned_8[] = {
@@ -900,6 +908,13 @@ static const struct YamlNode struct_ModelData[] = {
   YAML_STRUCT("topbarData", 2400, struct_TopBarPersistentData, NULL),
   YAML_UNSIGNED( "view", 8 ),
   YAML_STRING("modelRegistrationID", 8),
+#if defined(TELEMETRY_MAVLINK)
+  YAML_UNSIGNED( "mavlinkRssi", 1 ),
+  YAML_UNSIGNED( "mavlinkMimicSensors", 3 ),
+  YAML_UNSIGNED( "mavlinkRcOverride", 1 ),
+  YAML_PADDING( 3 ),
+  YAML_UNSIGNED( "mavlinkRssiScale", 8 ),
+#endif  
   YAML_END
 };
 static const struct YamlNode struct_PartialModel[] = {

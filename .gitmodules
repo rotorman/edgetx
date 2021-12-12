@@ -8,3 +8,9 @@
 [submodule "companion/src/thirdparty/yaml-cpp"]
 	path = companion/src/thirdparty/yaml-cpp
 	url = https://github.com/jbeder/yaml-cpp.git
+[submodule "radio/src/thirdparty/Mavlink/mavlink"]
+	path = radio/src/thirdparty/Mavlink/mavlink
+	url = https://github.com/mavlink/mavlink.git
+[submodule "radio/src/thirdparty/Mavlink/fastmavlink"]
+	path = radio/src/thirdparty/Mavlink/fastmavlink
+	url = https://github.com/olliw42/fastmavlink.git

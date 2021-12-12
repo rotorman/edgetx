@@ -23,8 +23,14 @@
 #pragma     data_alignment = 4
 #endif /* USB_OTG_HS_INTERNAL_DMA_ENABLED */
 
+#include "opentx.h"
+
 // include STM32 headers and generic board defs
-#include "board_common.h"
+//#include "board_common.h"
+
+#if defined(TELEMETRY_MAVLINK)
+#include "telemetry/mavlink/mavlink_telem.h"
+#endif
 
 extern "C" {
 
@@ -253,6 +259,12 @@ void usbSerialPutc(uint8_t c)
   */
 static uint16_t VCP_DataRx (uint8_t* Buf, uint32_t Len)
 {
+#if defined(TELEMETRY_MAVLINK) && defined(USB_SERIAL)
+  for (uint32_t i = 0; i < Len; i++) {
+    mavlinkTelemUsbRxFifo.push(Buf[i]);
+  }
+#endif	
+
   if (receiveDataCb)
     receiveDataCb(Buf, Len);
   

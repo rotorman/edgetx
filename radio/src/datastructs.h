@@ -135,11 +135,21 @@ static inline void check_struct()
   CHKSIZE(ModelData, 6606);
 #elif defined(PCBHORUS)
   #if defined(PCBX10)
-    CHKSIZE(RadioData, 921);
-    CHKSIZE(ModelData, 11026);
+    #if defined(TELEMETRY_MAVLINK)
+      CHKSIZE(RadioData, 921+1);
+      CHKSIZE(ModelData, 11026+2);
+    #else
+      CHKSIZE(RadioData, 921);
+      CHKSIZE(ModelData, 11026);
+    #endif
   #else
-    CHKSIZE(RadioData, 903);
-    CHKSIZE(ModelData, 11024);
+    #if defined(TELEMETRY_MAVLINK)
+      CHKSIZE(RadioData, 903+1);
+      CHKSIZE(ModelData, 11024+2);
+    #else
+      CHKSIZE(RadioData, 903);
+      CHKSIZE(ModelData, 11024);
+    #endif
   #endif
 #endif
 
