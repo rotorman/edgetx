@@ -131,8 +131,10 @@ void boardInit()
                          I2C_B2_RCC_AHB1Periph |
 #else
                          AUX_SERIAL_RCC_AHB1Periph |
+                         AUX_SERIAL_PWR_RCC_AHB1Periph |
 #endif
                          AUX2_SERIAL_RCC_AHB1Periph |
+						 AUX2_SERIAL_PWR_RCC_AHB1Periph |
                          TELEMETRY_RCC_AHB1Periph |
                          TRAINER_RCC_AHB1Periph |
                          BT_RCC_AHB1Periph |
