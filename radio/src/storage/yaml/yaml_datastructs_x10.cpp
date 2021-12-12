@@ -94,6 +94,8 @@ const struct YamlIdStr enum_UartModes[] = {
 #if defined(TELEMETRY_MAVLINK)
   {  UART_MODE_MAVLINK, "MODE_MAVLINK"  },
 #endif
+  {  UART_MODE_COUNT, "MODE_COUNT"  },
+  {  UART_MODE_MAX, "MODE_MAX"  },
   {  0, NULL  }
 };
 const struct YamlIdStr enum_ZoneOptionValueEnum[] = {
