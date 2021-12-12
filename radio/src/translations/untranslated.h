@@ -373,6 +373,8 @@
 #define TR_MAVLINK_EXTERNAL            "Mavlink external"
 #define TR_USB_MAVLINK                 "USB Mavlink (VCP)"
 
+#define TR_USE_THEME_COLOR "Use theme color"
+
 #define LEN_FSGROUPS                    "\001"
 #define TR_FSGROUPS                     "-""1""2""3"
 
