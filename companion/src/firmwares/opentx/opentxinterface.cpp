@@ -74,6 +74,8 @@ const char * OpenTxEepromInterface::getName()
       return "EdgeTX for DevKit V1";
     case BOARD_DEVKIT_V1:
       return "EdgeTX for DevKit V1";
+    case BOARD_DEVKIT_V1:
+      return "EdgeTX for DevKit V1";
     case BOARD_RADIOMASTER_TX12:
       return "EdgeTX for Radiomaster TX12";
     case BOARD_RADIOMASTER_ZORRO:
@@ -1473,6 +1475,7 @@ void registerOpenTxFirmwares()
   firmware->addOption("externalaccessmod", Firmware::tr("Support hardware mod: R9M ACCESS"));
   firmware->addOption("flyskygimbals", Firmware::tr("Support hardware mod: FlySky Paladin EV Gimbals"));
   registerOpenTxFirmware(firmware);
+
   /* Jumper T18 board */
   firmware = new OpenTxFirmware(FIRMWAREID("t18"), Firmware::tr("Jumper T18"), BOARD_JUMPER_T18);
   addOpenTxFrskyOptions(firmware);
