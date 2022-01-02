@@ -72,10 +72,6 @@ const char * OpenTxEepromInterface::getName()
       return "EdgeTX for Radiomaster TX16S";
     case BOARD_DEVKIT_V1:
       return "EdgeTX for DevKit V1";
-    case BOARD_DEVKIT_V1:
-      return "EdgeTX for DevKit V1";
-    case BOARD_DEVKIT_V1:
-      return "EdgeTX for DevKit V1";
     case BOARD_RADIOMASTER_TX12:
       return "EdgeTX for Radiomaster TX12";
     case BOARD_RADIOMASTER_ZORRO:
