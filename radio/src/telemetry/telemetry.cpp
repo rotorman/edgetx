@@ -428,7 +428,7 @@ void telemetryInit(uint8_t protocol)
   }
 #endif
 
-#if defined(AUX_SERIAL) || defined(PCBSKY9X)
+#if defined(AUX_SERIAL)
   else if (protocol == PROTOCOL_TELEMETRY_FRSKY_D_SECONDARY) {
     telemetryPortInit(0, TELEMETRY_SERIAL_DEFAULT);
     auxSerialTelemetryInit(PROTOCOL_TELEMETRY_FRSKY_D_SECONDARY);
@@ -456,14 +456,6 @@ void telemetryInit(uint8_t protocol)
 #endif
   }
 
-#if defined(REVX) && !defined(SIMU)
-  if (serialInversion) {
-    setMFP();
-  }
-  else {
-    clearMFP();
-  }
-#endif
 }
 
 
