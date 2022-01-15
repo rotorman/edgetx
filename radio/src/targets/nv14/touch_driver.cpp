@@ -453,55 +453,6 @@ void TouchInit(void)
   TouchReset();
 }
 
-void handleTouch()
-{
-  unsigned short touchX;
-  unsigned short touchY;
-  uint32_t tEvent = 0;
-  ft6x06_TS_GetXY(TOUCH_FT6236_I2C_ADDRESS, &touchX, &touchY, &tEvent);
-  // uint32_t gesture;
-  // ft6x06_TS_GetGestureID(TOUCH_FT6236_I2C_ADDRESS, &gesture);
-#if defined( LCD_DIRECTION ) && (LCD_DIRECTION == LCD_VERTICAL)
-  touchX = LCD_WIDTH - touchX;
-  touchY = LCD_HEIGHT - touchY;
-#else
-  unsigned short tmp = (LCD_WIDTH - 1) - touchY;
-  touchY = touchX;
-  touchX = tmp;
-#endif
-  if (tEvent == FT6206_TOUCH_EVT_FLAG_CONTACT) {
-    int dx = touchX - internalTouchState.x;
-    int dy = touchY - internalTouchState.y;
-
-    internalTouchState.x = touchX;
-    internalTouchState.y = touchY;
-
-    if (internalTouchState.event == TE_NONE || internalTouchState.event == TE_UP || internalTouchState.event == TE_SLIDE_END) {
-      internalTouchState.startX = internalTouchState.x;
-      internalTouchState.startY = internalTouchState.y;
-      internalTouchState.event = TE_DOWN;
-    }
-    else if (internalTouchState.event == TE_DOWN) {
-      if (dx >= SLIDE_RANGE || dx <= -SLIDE_RANGE || dy >= SLIDE_RANGE || dy <= -SLIDE_RANGE) {
-        internalTouchState.event = TE_SLIDE;
-        internalTouchState.deltaX = (short) dx;
-        internalTouchState.deltaY = (short) dy;
-      }
-      else {
-        internalTouchState.event = TE_DOWN;
-        internalTouchState.deltaX = 0;
-        internalTouchState.deltaY = 0;
-      }
-    }
-    else if (internalTouchState.event == TE_SLIDE) {
-      internalTouchState.event = TE_SLIDE; //no change
-      internalTouchState.deltaX = (short) dx;
-      internalTouchState.deltaY = (short) dy;
-    }
-
-  }
-}
-
 extern "C" void EXTI9_5_IRQHandler(void)
 {
   if (EXTI_GetITStatus(EXTI_Line9) != RESET) {
@@ -515,47 +466,72 @@ bool touchPanelEventOccured()
   return touchEventOccured;
 }
 
-TouchState touchPanelRead()
+struct TouchState touchPanelRead()
 {
   if (!touchEventOccured) return internalTouchState;
 
   touchEventOccured = false;
 
-  tmr10ms_t now = get_tmr10ms();
-  internalTouchState.tapCount = 0;
-
-  if (ft6x06_TS_DetectTouch(TOUCH_FT6236_I2C_ADDRESS)) {
-    handleTouch();
-    if (internalTouchState.event == TE_DOWN && downTime == 0) {
-      downTime = now;
-    }
-  } else {
-    if (internalTouchState.event == TE_DOWN) {
-      internalTouchState.event = TE_UP;
-      if (now - downTime <= TAP_TIME) {
-        if (now - tapTime > TAP_TIME) {
-          tapCount = 1;
-        } else {
-          tapCount++;
-        }
-        internalTouchState.tapCount = tapCount;
-        tapTime = now;
-      } else {
-        internalTouchState.tapCount = 0;  // not a tap
-      }
-      downTime = 0;
-    } else {
-      internalTouchState.x = LCD_WIDTH;
-      internalTouchState.y = LCD_HEIGHT;
-      internalTouchState.event = TE_SLIDE_END;
-    }
-  }
-  TouchState ret = internalTouchState;
   internalTouchState.deltaX = 0;
   internalTouchState.deltaY = 0;
-  if(internalTouchState.event == TE_UP)
-    internalTouchState.event = TE_NONE;
-  return ret;
+
+  if (ft6x06_TS_DetectTouch(TOUCH_FT6236_I2C_ADDRESS)) {
+      tmr10ms_t now = get_tmr10ms();
+      internalTouchState.tapCount = 0;
+
+      unsigned short touchX;
+      unsigned short touchY;
+      uint32_t tEvent = 0;
+      ft6x06_TS_GetXY(TOUCH_FT6236_I2C_ADDRESS, &touchX, &touchY, &tEvent);
+
+      #if defined( LCD_DIRECTION ) && (LCD_DIRECTION == LCD_VERTICAL)
+        touchX = LCD_WIDTH - touchX;
+        touchY = LCD_HEIGHT - touchY;
+      #else
+        unsigned short tmp = (LCD_WIDTH - 1) - touchY;
+        touchY = touchX;
+        touchX = tmp;
+      #endif
+
+      if (tEvent == FT6206_TOUCH_EVT_FLAG_CONTACT) {
+        if (internalTouchState.event == TE_NONE || internalTouchState.event == TE_UP ||
+          internalTouchState.event == TE_SLIDE_END) {
+          internalTouchState.event = TE_DOWN;
+          internalTouchState.startX = internalTouchState.x = touchX;
+          internalTouchState.startY = internalTouchState.y = touchY;
+          downTime = now;
+        } else {
+          internalTouchState.deltaX = touchX - internalTouchState.x;
+          internalTouchState.deltaY = touchY - internalTouchState.y;
+          if (internalTouchState.event == TE_SLIDE ||
+            abs(internalTouchState.deltaX) >= SLIDE_RANGE ||
+            abs(internalTouchState.deltaY) >= SLIDE_RANGE) {
+            internalTouchState.event = TE_SLIDE;
+            internalTouchState.x = touchX;
+            internalTouchState.y = touchY;
+          }
+        }
+      }
+      else
+      {
+        if (internalTouchState.event == TE_SLIDE) {
+          internalTouchState.event = TE_SLIDE_END;
+        } else if (internalTouchState.event == TE_DOWN) {
+          internalTouchState.event = TE_UP;
+          if (now - downTime <= TAP_TIME) {
+            if (now - tapTime > TAP_TIME)
+              tapCount = 1;
+            else
+              tapCount++;
+            internalTouchState.tapCount = tapCount;
+            tapTime = now;
+          }
+        } else if (internalTouchState.event != TE_SLIDE_END) {
+          internalTouchState.event = TE_NONE;
+        }
+      }
+  }
+  return internalTouchState;
 }
 
 TouchState getInternalTouchState()
