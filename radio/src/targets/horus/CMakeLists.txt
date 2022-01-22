@@ -1,6 +1,8 @@
 option(DISK_CACHE "Enable SD card disk cache" ON)
 option(UNEXPECTED_SHUTDOWN "Enable the Unexpected Shutdown screen" ON)
 option(IMU_LSM6DS33 "Enable I2C2 and LSM6DS33 IMU" OFF)
+option(SPACEMOUSE_U3 "Enable SpaceMouse on USART3" OFF)
+option(SPACEMOUSE_U6 "Enable SpaceMouse on USART6" OFF)
 option(PXX1 "PXX1 protocol support" ON)
 option(PXX2 "PXX2 protocol support" OFF)
 option(AFHDS3 "AFHDS3 TX Module" ON)
@@ -196,14 +198,31 @@ if(HARDWARE_EXTERNAL_ACCESS_MOD)
   add_definitions(-DHARDWARE_EXTERNAL_ACCESS_MOD)
 endif()
 
+if(SPACEMOUSE_U3)
+    add_definitions(-DSPACEMOUSE_U3)
+    set(AUX_SERIAL OFF)
+    set(SPACEMOUSE_DRIVER spacemouse_driver.cpp)
+endif()
+
+if(SPACEMOUSE_U6)
+    add_definitions(-DSPACEMOUSE_U6)
+    set(AUX_SERIAL2 OFF)
+    set(SPACEMOUSE_DRIVER spacemouse_driver.cpp)
+endif()
+
 if(PCB STREQUAL X10)
   set(FLYSKY_HALL_STICKS_DRIVER flyskyHallStick_driver.cpp)
+  set(SPACEMOUSE_DRIVER spacemouse_driver.cpp)
 endif()
 
 if(IMU_LSM6DS33)
-  add_definitions(-DIMU_LSM6DS33)
-  set(AUX_SERIAL OFF)
-  set(IMU_LSM6DS33_DRIVER imu_lsm6ds33.cpp)
+  if(SPACEMOUSE_U3)
+    message(FATAL_ERROR "Option IMU_LSM6DS33=ON cannot be combined with SPACEMOUSE_U3=ON")
+  else()
+    add_definitions(-DIMU_LSM6DS33)
+    set(AUX_SERIAL OFF)
+    set(IMU_LSM6DS33_DRIVER imu_lsm6ds33.cpp)
+  endif()
 endif()
 
 if(NOT INTERNAL_MODULE_PXX1)
@@ -286,6 +305,7 @@ set(FIRMWARE_TARGET_SRC
   ${LCD_DRIVER}
   ${AUX_SERIAL_DRIVER}
   ${FLYSKY_HALL_STICKS_DRIVER}
+  ${SPACEMOUSE_DRIVER}
   ${IMU_LSM6DS33_DRIVER}
   ${TOUCH_DRIVER}
   board.cpp

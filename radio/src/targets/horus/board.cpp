@@ -44,6 +44,10 @@ extern void flysky_hall_stick_check_init(void);
 extern void flysky_hall_stick_init(void);
 extern void flysky_hall_stick_loop( void );
 
+#if defined(RADIO_TX16S) && ((defined(SPACEMOUSE_U3) && !defined(IMU_LSM6DS33)) || defined(SPACEMOUSE_U6))
+  extern void spacemouse_init(void);
+#endif
+
 HardwareOptions hardwareOptions;
 bool boardBacklightOn = false;
 
@@ -129,6 +133,8 @@ void boardInit()
 #endif
 #if defined(IMU_LSM6DS33)
                          I2C_B2_RCC_AHB1Periph |
+#elif defined(SPACEMOUSE_U3)
+                         SPACEMOUSE_SERIAL_RCC_AHB1Periph |
 #else
                          AUX_SERIAL_RCC_AHB1Periph |
 #endif
@@ -157,6 +163,8 @@ void boardInit()
 #endif
 #if defined(IMU_LSM6DS33)
                          I2C_B2_RCC_APB1Periph |
+#elif defined(SPACEMOUSE_U3)
+                         SPACEMOUSE_SERIAL_RCC_APB1Periph |
 #else
                          AUX_SERIAL_RCC_APB1Periph |
 #endif
@@ -236,7 +244,6 @@ void boardInit()
           break;
       }
   }
-
 #endif
 
   if (globalData.flyskygimbals)
@@ -249,6 +256,10 @@ void boardInit()
 
 #if defined(IMU_LSM6DS33)
   imu_lsm6ds33_init();
+#endif
+
+#if defined(RADIO_TX16S) && ((defined(SPACEMOUSE_U3) && !defined(IMU_LSM6DS33)) || defined(SPACEMOUSE_U6))
+  spacemouse_init();
 #endif
 
   init2MhzTimer();

@@ -406,6 +406,14 @@ if(IMU_LSM6DS33)
     add_definitions(-DIMU_LSM6DS33)
 endif()
 
+if(SPACEMOUSE_U3)
+    add_definitions(-DSPACEMOUSE_U3)
+endif()
+
+if(SPACEMOUSE_U6)
+    add_definitions(-DSPACEMOUSE_U6)
+endif()
+
 if(EEPROM_VARIANT_NEEDED)
   add_definitions(-DEEPROM_VARIANT=${EEPROM_VARIANT})
 endif()

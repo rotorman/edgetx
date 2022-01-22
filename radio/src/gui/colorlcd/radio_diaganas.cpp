@@ -25,11 +25,15 @@
 #include "../../hal/adc_driver.h"
 
 #if defined(IMU_LSM6DS33)
-#include "imu_lsm6ds33.h"
+  #include "imu_lsm6ds33.h"
 #endif
 
 #if defined(RADIO_FAMILY_T16) || defined(PCBNV14)
-#include "../../targets/horus/flyskyHallStick_driver.h"
+  #include "../../targets/horus/flyskyHallStick_driver.h"
+#endif
+
+#if defined(RADIO_TX16S)
+  #include "../../targets/horus/spacemouse_driver.h"
 #endif
 
 #define STATSDEPTH 8 // ideally a value of power of 2
@@ -64,7 +68,36 @@ class AnaCalibratedViewWindow: public Window {
 
     void paint(BitmapBuffer * dc) override
     {
-#if !defined(SIMU) && (defined(RADIO_FAMILY_T16) || defined(PCBNV14))
+#if !defined(SIMU) && defined(RADIO_TX16S) && defined(SPACEMOUSE_U3)
+        for (uint8_t i = 0; i < SPACEMOUSE_CHANNEL_COUNT; i++) {
+            #if LCD_W > LCD_H
+              coord_t y = 1 + (i / 2) * FH;
+              uint8_t x = i & 1 ? LCD_W / 2 + 10 : 10;
+            #else
+              coord_t y = 1 + i * FH;
+              uint8_t x = 10;
+            #endif
+            dc->drawNumber(x, y, i + 1, LEADING0 | LEFT | COLOR_THEME_PRIMARY1, 2);
+            dc->drawText(x + 2 * 15 - 2, y, ":", COLOR_THEME_PRIMARY1);
+            dc->drawNumber(x + CA_X_OFFSET, y, (int16_t) calibratedAnalogs[CONVERT_MODE(i)] * 25 / 256, RIGHT | COLOR_THEME_PRIMARY1);
+            dc->drawNumber(x + VALUE_X_OFFSET, y, spacemouse_values[i], RIGHT | COLOR_THEME_PRIMARY1);
+        }
+
+        for (uint8_t i = SPACEMOUSE_CHANNEL_COUNT; i < NUM_STICKS + NUM_POTS + NUM_SLIDERS; i++) {
+            #if LCD_W > LCD_H
+              coord_t y = 1 + (i / 2) * FH;
+              uint8_t x = i & 1 ? LCD_W / 2 + 10 : 10;
+            #else
+              coord_t y = 1 + i * FH;
+              uint8_t x = 10;
+            #endif
+            dc->drawNumber(x, y, i + 1, LEADING0 | LEFT | COLOR_THEME_PRIMARY1, 2);
+            dc->drawText(x + 2 * 15 - 2, y, ":",  COLOR_THEME_PRIMARY1);
+            dc->drawNumber(x + CA_X_OFFSET, y, (int16_t) calibratedAnalogs[CONVERT_MODE(i)] * 25 / 256, RIGHT | COLOR_THEME_PRIMARY1);
+            dc->drawNumber(x + VALUE_X_OFFSET, y, anaIn(i), RIGHT | COLOR_THEME_PRIMARY1);
+        }
+
+#elif !defined(SIMU) && (defined(RADIO_FAMILY_T16) || defined(PCBNV14))
         if (globalData.flyskygimbals)
         {
             for (uint8_t i = 0; i < FLYSKY_HALL_CHANNEL_COUNT; i++) {
@@ -97,6 +130,7 @@ class AnaCalibratedViewWindow: public Window {
         }
 #endif
 
+#if !defined(SPACEMOUSE_U3) && !defined(SPACEMOUSE_U6)
         if (!globalData.flyskygimbals) // Also Simulator
         {
             for (uint8_t i = 0; i < NUM_STICKS + NUM_POTS + NUM_SLIDERS; i++) {
@@ -113,6 +147,7 @@ class AnaCalibratedViewWindow: public Window {
                 dc->drawNumber(x + VALUE_X_OFFSET, y, anaIn(i), RIGHT | COLOR_THEME_PRIMARY1);
             }
         }
+#endif
 
 #if !defined(SIMU) && defined(IMU_LSM6DS33)
       coord_t yimu = MENU_CONTENT_TOP + 3 * FH;

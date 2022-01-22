@@ -37,6 +37,10 @@
 
 extern uint16_t get_flysky_hall_adc_value(uint8_t ch);
 
+#if defined(RADIO_TX16S) && ((defined(SPACEMOUSE_U3) && !defined(IMU_LSM6DS33)) || defined(SPACEMOUSE_U6))
+  extern void spacemouse_loop( void );
+#endif
+
 RadioData  g_eeGeneral;
 ModelData  g_model;
 
@@ -170,6 +174,10 @@ void per10ms()
 #endif
 
   readKeysAndTrims();
+
+#if defined(RADIO_TX16S) && ((defined(SPACEMOUSE_U3) && !defined(IMU_LSM6DS33)) || defined(SPACEMOUSE_U6))
+  spacemouse_loop();
+#endif
 
 #if defined(FUNCTION_SWITCHES)
   evalFunctionSwitches();
