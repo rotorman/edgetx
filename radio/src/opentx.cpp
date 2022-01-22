@@ -1071,15 +1071,7 @@ JitterMeter<uint16_t> avgJitter[NUM_ANALOGS];
 tmr10ms_t jitterResetTime = 0;
 #endif
 
-#define JITTER_FILTER_STRENGTH  4         // tune this value, bigger value - more filtering (range: 1-5) (see explanation below)
-#define ANALOG_SCALE            1         // tune this value, bigger value - more filtering (range: 0-1) (see explanation below)
-
-#define JITTER_ALPHA            (1<<JITTER_FILTER_STRENGTH)
-#define ANALOG_MULTIPLIER       (1<<ANALOG_SCALE)
 #define ANA_FILT(chan)          (s_anaFilt[chan] / (JITTER_ALPHA * ANALOG_MULTIPLIER))
-#if (JITTER_ALPHA * ANALOG_MULTIPLIER > 32)
-  #error "JITTER_FILTER_STRENGTH and ANALOG_SCALE are too big, their summ should be <= 5 !!!"
-#endif
 
 #if !defined(SIMU)
 uint16_t anaIn(uint8_t chan)
@@ -1840,6 +1832,13 @@ void opentxInit()
     if (!sdMounted())
       sdInit();
 
+#if !defined(COLORLCD)
+    if (!sdMounted()) {
+      g_eeGeneral.pwrOffSpeed = 2;
+      runFatalErrorScreen(STR_NO_SDCARD);
+    }
+#endif
+    
 #if defined(AUTOUPDATE)
     sportStopSendByteLoop();
     if (f_stat(AUTOUPDATE_FILENAME, nullptr) == FR_OK) {
@@ -2021,12 +2020,12 @@ int main()
   }
 #endif
 
-#if !defined(EEPROM)
-  if (!SD_CARD_PRESENT() && !UNEXPECTED_SHUTDOWN()) {
-    // TODO: b/w SD card fatal screen
 #if defined(COLORLCD)
+  // SD_CARD_PRESENT() does not work properly on most
+  // B&W targets, so that we need to delay the detection
+  // until the SD card is mounted (requires RTOS scheduler running)
+  if (!SD_CARD_PRESENT() && !UNEXPECTED_SHUTDOWN()) {
     runFatalErrorScreen(STR_NO_SDCARD);
-#endif
   }
 #endif
 
