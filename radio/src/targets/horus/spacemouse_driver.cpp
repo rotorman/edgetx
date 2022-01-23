@@ -167,7 +167,7 @@ void Parse_Character(STRUCT_SPACEMOUSE *spacemouseBuffer, unsigned char ch)
       break;
     }
     case SM_CHECKSUM: {
-      spacemouseBuffer->checkSum |= ch << ((spacemouseBuffer->dataIndex++) * 8);
+      spacemouseBuffer->checkSum |= ch << ((spacemouseBuffer->dataIndex++) * 7);
       if (spacemouseBuffer->dataIndex >= 2) {
         spacemouseBuffer->dataIndex = 0;
         spacemouseBuffer->parsestate = SM_FOOTER;
@@ -210,7 +210,8 @@ void spacemouse_loop(void)
             SpaceMouseProtocol.msg_OK = false;
             for ( uint8_t channel = 0; channel < SPACEMOUSE_CHANNEL_COUNT; channel++ )
             {
-              spacemouse_values[channel] = (((SpaceMouseProtocol.data[channel*2] << 8) + SpaceMouseProtocol.data[(channel*2)+1]) & 0x3FFF) << 2; // Convert to int16_t (signed 16-bit value)
+              // The values are 7-bit in LSByte and MSByte only. Set MSBit is reserved for start, stop & commands.
+              spacemouse_values[channel] = ((SpaceMouseProtocol.data[channel*2] << 7) + SpaceMouseProtocol.data[(channel*2)+1]) - SPACEMOUSE_OFFSET_VALUE;
             }
         }
     }
