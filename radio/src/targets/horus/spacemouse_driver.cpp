@@ -40,14 +40,13 @@ unsigned short calc_checksum(void *pBuffer,unsigned char BufferSize)
   return (checksum & 0x3FFF);
 }
 
-//uint16_t get_flysky_hall_adc_value(uint8_t ch)
 uint16_t get_spacemouse_adc_value(uint8_t ch)
 {
   if (ch >= SPACEMOUSE_CHANNEL_COUNT) {
     return 0;
   }
 
-  return spacemouse_values[ch] + SPACEMOUSE_OFFSET_VALUE;
+  return spacemouse_values[ch] + SPACEMOUSE_OUTPUT_OFFSET;
 }
 
 uint8_t SpaceMouseGetByte(uint8_t * byte)
@@ -63,6 +62,11 @@ void spacemouse_tare( void )
 void spacemouse_startstreaming( void )
 {
   USART_SendData(SPACEMOUSE_SERIAL_USART, SPACEMOUSE_CMD_STARTSTREAMING);
+}
+
+void spacemouse_reqsingledata( void )
+{
+  USART_SendData(SPACEMOUSE_SERIAL_USART, SPACEMOUSE_CMD_REQSINGLEDATA);
 }
 
 void spacemouse_init()
@@ -137,7 +141,7 @@ void spacemouse_init()
   USART_Cmd(SPACEMOUSE_SERIAL_USART, ENABLE);
   DMA_Cmd(SPACEMOUSE_DMA_Stream_RX, ENABLE);
 
-  spacemouse_startstreaming();
+  //spacemouse_startstreaming();
 }
 
 void Parse_Character(STRUCT_SPACEMOUSE *spacemouseBuffer, unsigned char ch)
@@ -211,8 +215,9 @@ void spacemouse_loop(void)
             for ( uint8_t channel = 0; channel < SPACEMOUSE_CHANNEL_COUNT; channel++ )
             {
               // The values are 7-bit in LSByte and MSByte only. Set MSBit is reserved for start, stop & commands.
-              spacemouse_values[channel] = ((SpaceMouseProtocol.data[channel*2] << 7) + SpaceMouseProtocol.data[(channel*2)+1]) - SPACEMOUSE_OFFSET_VALUE;
+              spacemouse_values[channel] = ((SpaceMouseProtocol.data[channel*2] << 7) + SpaceMouseProtocol.data[(channel*2)+1]) - SPACEMOUSE_INPUT_OFFSET;
             }
         }
     }
+    spacemouse_reqsingledata();
 }
