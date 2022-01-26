@@ -42,7 +42,7 @@ static inline void check_struct()
   CHKSIZE(CurveRef, 2);
 
   /* Difference between Taranis/Horus is LEN_EXPOMIX_NAME */
-  /* LEN_FUNCTION_NAME is the difference in CustomFunctionData */
+  /* LEN_xFUNCTION_NAME is the difference in CustomFunctionData */
 
   CHKSIZE(VarioData, 5);
 
@@ -117,39 +117,39 @@ static inline void check_struct()
 
 #if defined(PCBXLITES)
   CHKSIZE(RadioData, 860);
-  CHKSIZE(ModelData, 6159);
+  CHKSIZE(ModelData, 6160);
 #elif defined(PCBXLITE)
   CHKSIZE(RadioData, 858);
-  CHKSIZE(ModelData, 6159);
+  CHKSIZE(ModelData, 6160);
 #elif defined(RADIO_TPRO)
   CHKSIZE(RadioData, 841);
-  CHKSIZE(ModelData, 6184);
+  CHKSIZE(ModelData, 6185);
 #elif defined(PCBX7)
   CHKSIZE(RadioData, 864);
-  CHKSIZE(ModelData, 6159);
+  CHKSIZE(ModelData, 6160);
 #elif defined(PCBX9E)
   CHKSIZE(RadioData, 954);
-  CHKSIZE(ModelData, 6611);
+  CHKSIZE(ModelData, 6612);
 #elif defined(PCBX9D) || defined(PCBX9DP)
   CHKSIZE(RadioData, 896);
-  CHKSIZE(ModelData, 6603);
+  CHKSIZE(ModelData, 6604);
 #elif defined(PCBHORUS)
   #if defined(PCBX10)
     #if defined(TELEMETRY_MAVLINK)
       CHKSIZE(RadioData, 921+1);
-      CHKSIZE(ModelData, 11023+2);
+      CHKSIZE(ModelData, 11024+2);
     #else
       CHKSIZE(RadioData, 921);
-      CHKSIZE(ModelData, 11023);
-    #endif  
+      CHKSIZE(ModelData, 11024);
+    #endif
   #else
     #if defined(TELEMETRY_MAVLINK)
       CHKSIZE(RadioData, 903+1);
-      CHKSIZE(ModelData, 11021+2);
+      CHKSIZE(ModelData, 11022+2);
     #else
       CHKSIZE(RadioData, 903);
-      CHKSIZE(ModelData, 11021);
-    #endif	  
+      CHKSIZE(ModelData, 11022);
+    #endif
   #endif
 #endif
 
