@@ -1158,10 +1158,24 @@ void getADC()
     //   * <out> = s_anaFilt[x]
     uint32_t previous = s_anaFilt[x] / JITTER_ALPHA;
     uint32_t diff = (v > previous) ? (v - previous) : (previous - v);
-    if (!g_eeGeneral.jitterFilter && diff < (10*ANALOG_MULTIPLIER)) { // g_eeGeneral.jitterFilter is inverted, 0 - active
+
+    // Combine ADC jitter filter setting form radio and model.
+    // Model can override (on or off) or use setting from radio setup.
+    // Model setting is active when 1, radio setting is active when 0
+    uint8_t useJitterFilter = 0;
+    if (g_model.jitterFilter == OVERRIDE_VALUE_GLOBAL) {
+       // Use radio setting - which is inverted
+      useJitterFilter = !g_eeGeneral.noJitterFilter;
+    } else {
+      // Enable if value is "On", disable if "Off"
+      useJitterFilter = (g_model.jitterFilter == OVERRIDE_VALUE_ON)?1:0;
+    }
+
+    if (useJitterFilter && diff < (10*ANALOG_MULTIPLIER)) {
       // apply jitter filter
       s_anaFilt[x] = (s_anaFilt[x] - previous) + v;
     }
+
     else {
       // use unfiltered value
       s_anaFilt[x] = v * JITTER_ALPHA;
@@ -2064,6 +2078,10 @@ uint32_t pwrPressedDuration()
   }
 }
 
+#if defined(COLORLCD)
+inline tmr10ms_t getTicks() { return g_tmr10ms; }
+#endif
+
 uint32_t pwrCheck()
 {
   const char * message = nullptr;
@@ -2123,7 +2141,7 @@ uint32_t pwrCheck()
             msg = STR_USB_STILL_CONNECTED;
             msg_len = sizeof(TR_USB_STILL_CONNECTED);
           }
-          
+
           event_t evt = getEvent(false);
           SET_WARNING_INFO(msg, msg_len, 0);
           DISPLAY_WARNING(evt);
@@ -2154,7 +2172,11 @@ uint32_t pwrCheck()
           }
           else if (!modelConnectedConfirmed) {
             message = STR_MODEL_STILL_POWERED;
-            closeCondition = [](){
+            closeCondition = []() {
+              tmr10ms_t startTime = getTicks();
+              while (!TELEMETRY_STREAMING()) {
+                if (getTicks() - startTime > TELEMETRY_CHECK_DELAY10ms) break;
+              }
               return !TELEMETRY_STREAMING() || g_eeGeneral.disableRssiPoweroffAlarm;
             };
           }
@@ -2177,7 +2199,7 @@ uint32_t pwrCheck()
             LED_ERROR_END();
             return e_power_on;
           }
-          
+
 #endif // COLORLCD
         }
 
