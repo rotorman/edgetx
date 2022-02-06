@@ -22,6 +22,10 @@
 #include "opentx.h"
 #include "mixer_scheduler.h"
 
+#if defined(TELEMETRY_MAVLINK)
+#include "telemetry/mavlink/mavlink_telem.h"
+#endif
+
 RTOS_TASK_HANDLE menusTaskId;
 RTOS_DEFINE_STACK(menusStack, MENUS_STACK_SIZE);
 
@@ -41,6 +45,9 @@ void stackPaint()
   audioStack.paint();
 #if defined(CLI)
   cliStack.paint();
+#endif
+#if defined(TELEMETRY_MAVLINK)
+  mavlinkStack.paint();
 #endif
 }
 
@@ -297,6 +304,10 @@ void tasksStart()
 #if !defined(SIMU)
   RTOS_CREATE_TASK(audioTaskId, audioTask, "audio", audioStack,
                    AUDIO_STACK_SIZE, AUDIO_TASK_PRIO);
+#endif
+
+#if defined(TELEMETRY_MAVLINK)
+  mavlinkStart();
 #endif
 
   RTOS_START();

@@ -31,6 +31,9 @@
   #include "view_text.h"
 #endif
 
+#if defined(TELEMETRY_MAVLINK)
+#include "telemetry/mavlink/mavlink_telem.h"
+#endif
 
 extern uint16_t get_flysky_hall_adc_value(uint8_t ch);
 
@@ -219,6 +222,10 @@ void per10ms()
 #endif
 
   outputTelemetryBuffer.per10ms();
+
+#if defined(TELEMETRY_MAVLINK)
+  mavlinkTelem.tick10ms();
+#endif
 
   heartbeat |= HEART_TIMER_10MS;
 }

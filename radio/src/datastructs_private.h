@@ -706,6 +706,17 @@ PACK(struct ModelData {
 
   FUNCTION_SWITCHS_FIELDS
 
+#if defined(TELEMETRY_MAVLINK)
+  // TODO: use a specific structure
+  uint8_t mavlinkRssi:1;
+  uint8_t mavlinkMimicSensors:3; // currently just on/off, but allow in the future e.g. FrSky, CF, FrSky passthrough.
+  uint8_t mavlinkRcOverride:1;
+  uint8_t mavlinkSpare:3;
+  uint8_t mavlinkRssiScale;
+  // needs to adapt CHKSIZE in datastructs.h
+  // if not all are used, compiler optiomizes to lowest size, which may raise an error
+#endif
+
   bool isTrainerTraineeEnable() const
   {
 #if defined(PCBNV14)
@@ -919,6 +930,14 @@ PACK(struct RadioData {
   GYRO_FIELDS
 
   NOBACKUP(int8_t   uartSampleMode:2); // See UartSampleModes
+  
+#if defined(TELEMETRY_MAVLINK)
+  // TODO: use specific structure
+  uint8_t mavlinkBaudrate:3;
+  uint8_t mavlinkBaudrate2:3;
+  uint8_t mavlinkSpare:2;
+  // needs to adapt to CHKSIZE in datastructs.h
+#endif  
 });
 
 #undef SWITCHES_WARNING_DATA
