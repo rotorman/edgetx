@@ -13,7 +13,7 @@ if(GTEST_INCDIR AND GTEST_SRCDIR AND Qt5Widgets_FOUND)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG} -O0 ${WARNING_FLAGS} -fsanitize=address")
   use_cxx11()  # ensure gnu++11 in CXX_FLAGS with CMake < 3.1
 
-  if(PCB STREQUAL X12S OR PCB STREQUAL X10)
+  if(PCB STREQUAL X12S OR PCB STREQUAL X10 OR PCB STREQUAL DEVKIT)
 
     set(EXTRACT_MODEL_FILES model_23_x12s model_23_x10 model_25_tx16s)
 
@@ -63,7 +63,7 @@ if(GTEST_INCDIR AND GTEST_SRCDIR AND Qt5Widgets_FOUND)
     ../targets/simu/simulcd.cpp
     )
   add_dependencies(gtests-radio ${RADIO_DEPENDENCIES} ${FIRMWARE_DEPENDENCIES} gtests-radio-lib)
-  if(PCB STREQUAL X12S OR PCB STREQUAL X10)
+  if(PCB STREQUAL X12S OR PCB STREQUAL X10 OR PCB STREQUAL DEVKIT)
     add_dependencies(gtests-radio ${HORUS_MODEL_FILES})
   endif()
   target_link_libraries(gtests-radio gtests-radio-lib pthread Qt5::Core Qt5::Widgets)
