@@ -101,6 +101,12 @@ static const char * const options[] = {
 #if defined(BIND_KEY)
   "bindkey",
 #endif
+#if defined(SPACEMOUSE_U3)
+  "spacemouse_u3",
+#endif
+#if defined(SPACEMOUSE_U6)
+  "spacemouse_u6",
+#endif
   nullptr //sentinel
 };
 
