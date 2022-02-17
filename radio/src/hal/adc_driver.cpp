@@ -127,8 +127,6 @@ static bool adcSingleRead()
 #pragma weak adcRead
 bool adcRead()
 {
-  uint16_t temp[NUM_ANALOGS] = { 0 };
-
   uint8_t first_analog_adc;
 #if defined(RADIO_FAMILY_T16) || defined(PCBNV14)
     if (globalData.flyskygimbals)
@@ -142,24 +140,8 @@ bool adcRead()
     first_analog_adc = FIRST_ANALOG_ADC;
 #endif
 
-
-  for (int i=0; i<4; i++) {
-    if (!adcSingleRead())
-        return false;
-    for (uint8_t x=first_analog_adc; x<NUM_ANALOGS; x++) {
-      uint16_t val = adcValues[x];
-#if defined(JITTER_MEASURE)
-      if (JITTER_MEASURE_ACTIVE()) {
-        rawJitter[x].measure(val);
-      }
-#endif
-      temp[x] += val;
-    }
-  }
-
-  for (uint8_t x=first_analog_adc; x<NUM_ANALOGS; x++) {
-    adcValues[x] = temp[x] >> 2;
-  }
+  if (!adcSingleRead())
+      return false;
 
 #if NUM_PWMSTICKS > 0
   if (STICKS_PWM_ENABLED()) {

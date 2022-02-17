@@ -323,7 +323,7 @@
   #define ADC_CHANNEL_EXT4              ADC_Channel_3   // ADC3_IN3: same as RV
   #define ADC_MAIN                      ADC3
   #define ADC_EXT                       ADC1
-  #define ADC_SAMPTIME                  3
+  #define ADC_SAMPTIME                  ((uint8_t)0x07) // ADC_SampleTime_480Cycles
   #define ADC_DMA                       DMA2
   #define ADC_DMA_Channel               DMA_Channel_2
   #define ADC_DMA_Stream                DMA2_Stream0
