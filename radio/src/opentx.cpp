@@ -34,7 +34,12 @@
 
 #if defined(RADIO_TX16S) && ((defined(SPACEMOUSE_U3) && !defined(IMU_LSM6DS33)) || defined(SPACEMOUSE_U6))
   #include "targets/horus/spacemouse_driver.h"
-  extern uint16_t get_spacemouse_adc_value(uint8_t ch);
+  #if defined(SPACEMOUSE_U3)
+    extern uint16_t get_spacemouseu3_adc_value(uint8_t ch);
+  #endif
+  #if defined(SPACEMOUSE_U6)
+    extern uint16_t get_spacemouseu6_adc_value(uint8_t ch);
+  #endif
   extern void spacemouse_loop( void );
 #endif
 
@@ -328,7 +333,11 @@ void generalDefault()
   g_eeGeneral.wavVolume = 2;
   g_eeGeneral.backgroundVolume = 1;
 
+#if (NUM_STICKS > 4)
+  for (int i=0; i<4; ++i) {
+#else
   for (int i=0; i<NUM_STICKS; ++i) {
+#endif
     g_eeGeneral.trainer.mix[i].mode = 2;
     g_eeGeneral.trainer.mix[i].srcChn = channelOrder(i+1) - 1;
     g_eeGeneral.trainer.mix[i].studWeight = 100;
@@ -1090,11 +1099,29 @@ void getADC()
   for (uint8_t x=0; x<NUM_ANALOGS; x++) {
     uint32_t v;
 #if defined(RADIO_TX16S) && ((defined(SPACEMOUSE_U3) && !defined(IMU_LSM6DS33)) || defined(SPACEMOUSE_U6))
-    if (x < SPACEMOUSE_CHANNEL_COUNT) {
-      v = get_spacemouse_adc_value(x) >> (1 - ANALOG_SCALE);
-    } else {
-    v = getAnalogValue(x) >> (1 - ANALOG_SCALE);
-    }
+    #if defined(SPACEMOUSE_U3) && defined(SPACEMOUSE_U6)
+      if (x < 2*SPACEMOUSE_CHANNEL_COUNT) {
+        if (x < SPACEMOUSE_CHANNEL_COUNT)
+          v = get_spacemouseu3_adc_value(x) >> (1 - ANALOG_SCALE);
+        else
+          v = get_spacemouseu6_adc_value(x-SPACEMOUSE_CHANNEL_COUNT) >> (1 - ANALOG_SCALE);
+      } else {
+        v = getAnalogValue(x) >> (1 - ANALOG_SCALE);
+      }
+    #elif defined(SPACEMOUSE_U3)
+      if (x < SPACEMOUSE_CHANNEL_COUNT) {
+        v = get_spacemouseu3_adc_value(x) >> (1 - ANALOG_SCALE);
+      } else {
+        v = getAnalogValue(x) >> (1 - ANALOG_SCALE);
+      }
+    #else // SPACEMOUSE_U6
+      if (x < SPACEMOUSE_CHANNEL_COUNT) {
+        v = get_spacemouseu6_adc_value(x) >> (1 - ANALOG_SCALE);
+      } else {
+        v = getAnalogValue(x) >> (1 - ANALOG_SCALE);
+      }
+    #endif
+
 #else
   #if defined(RADIO_FAMILY_T16) || defined(PCBNV14)
     if (globalData.flyskygimbals) {

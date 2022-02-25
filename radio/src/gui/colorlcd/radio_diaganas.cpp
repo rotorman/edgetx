@@ -80,7 +80,7 @@ class AnaCalibratedViewWindow: public Window {
             dc->drawNumber(x, y, i + 1, LEADING0 | LEFT | COLOR_THEME_PRIMARY1, 2);
             dc->drawText(x + 2 * 15 - 2, y, ":", COLOR_THEME_PRIMARY1);
             dc->drawNumber(x + CA_X_OFFSET, y, (int16_t) calibratedAnalogs[CONVERT_MODE(i)] * 25 / 256, RIGHT | COLOR_THEME_PRIMARY1);
-            dc->drawNumber(x + VALUE_X_OFFSET, y, spacemouse_values[i], RIGHT | COLOR_THEME_PRIMARY1);
+            dc->drawNumber(x + VALUE_X_OFFSET, y, spacemouseu3_values[i], RIGHT | COLOR_THEME_PRIMARY1);
         }
 
         for (uint8_t i = SPACEMOUSE_CHANNEL_COUNT; i < NUM_STICKS + NUM_POTS + NUM_SLIDERS; i++) {

@@ -61,5 +61,12 @@ enum
   SM_FOOTER,
 };
 
-extern signed short spacemouse_values[SPACEMOUSE_CHANNEL_COUNT];
-void spacemouse_tare( void );
+#if defined(SPACEMOUSE_U3)
+  extern signed short spacemouseu3_values[SPACEMOUSE_CHANNEL_COUNT];
+  void spacemouseu3_tare( void );
+#endif
+
+#if defined(SPACEMOUSE_U6)
+  extern signed short spacemouseu6_values[SPACEMOUSE_CHANNEL_COUNT];
+  void spacemouseu6_tare( void );
+#endif

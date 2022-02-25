@@ -206,7 +206,7 @@ endif()
 
 if(SPACEMOUSE_U6)
     add_definitions(-DSPACEMOUSE_U6)
-    set(AUX_SERIAL2 OFF)
+    set(AUX2_SERIAL OFF)
     set(SPACEMOUSE_DRIVER spacemouse_driver.cpp)
 endif()
 

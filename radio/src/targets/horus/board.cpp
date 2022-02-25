@@ -45,7 +45,12 @@ extern void flysky_hall_stick_init(void);
 extern void flysky_hall_stick_loop( void );
 
 #if defined(RADIO_TX16S) && ((defined(SPACEMOUSE_U3) && !defined(IMU_LSM6DS33)) || defined(SPACEMOUSE_U6))
-  extern void spacemouse_init(void);
+  #if defined(SPACEMOUSE_U3)
+    extern void spacemouseu3_init(void);
+  #endif
+  #if defined(SPACEMOUSE_U6)
+    extern void spacemouseu6_init(void);
+  #endif
 #endif
 
 HardwareOptions hardwareOptions;
@@ -134,11 +139,15 @@ void boardInit()
 #if defined(IMU_LSM6DS33)
                          I2C_B2_RCC_AHB1Periph |
 #elif defined(SPACEMOUSE_U3)
-                         SPACEMOUSE_SERIAL_RCC_AHB1Periph |
+                         SPACEMOUSEU3_SERIAL_RCC_AHB1Periph |
 #else
                          AUX_SERIAL_RCC_AHB1Periph |
 #endif
+#if defined(SPACEMOUSE_U6)
+                         SPACEMOUSEU6_SERIAL_RCC_AHB1Periph |
+#else
                          AUX2_SERIAL_RCC_AHB1Periph |
+#endif
                          TELEMETRY_RCC_AHB1Periph |
                          TRAINER_RCC_AHB1Periph |
                          BT_RCC_AHB1Periph |
@@ -164,7 +173,7 @@ void boardInit()
 #if defined(IMU_LSM6DS33)
                          I2C_B2_RCC_APB1Periph |
 #elif defined(SPACEMOUSE_U3)
-                         SPACEMOUSE_SERIAL_RCC_APB1Periph |
+                         SPACEMOUSEU3_SERIAL_RCC_APB1Periph |
 #else
                          AUX_SERIAL_RCC_APB1Periph |
 #endif
@@ -189,7 +198,11 @@ void boardInit()
                          TELEMETRY_RCC_APB2Periph |
                          BT_RCC_APB2Periph |
                          AUX_SERIAL_RCC_APB2Periph |
+#if defined(SPACEMOUSE_U6)
+                         SPACEMOUSEU6_SERIAL_RCC_APB2Periph |
+#else
                          AUX2_SERIAL_RCC_APB2Periph |
+#endif
                          GPS_RCC_APB2Periph |
                          BACKLIGHT_RCC_APB2Periph,
                          ENABLE);
@@ -259,7 +272,12 @@ void boardInit()
 #endif
 
 #if defined(RADIO_TX16S) && ((defined(SPACEMOUSE_U3) && !defined(IMU_LSM6DS33)) || defined(SPACEMOUSE_U6))
-  spacemouse_init();
+  #if defined(SPACEMOUSE_U3)
+    spacemouseu3_init();
+  #endif
+  #if defined(SPACEMOUSE_U6)
+    spacemouseu6_init();
+  #endif
 #endif
 
   init2MhzTimer();

@@ -135,7 +135,13 @@ static inline void check_struct()
   CHKSIZE(ModelData, 6606);
 #elif defined(PCBHORUS)
   #if defined(PCBX10)
-    CHKSIZE(RadioData, 921);
+    #if defined(SPACEMOUSE_U3) && defined(SPACEMOUSE_U6)
+      CHKSIZE(RadioData, 921+(8*9)); // 8 additional sticks
+    #elif defined(SPACEMOUSE_U3) || defined(SPACEMOUSE_U6)
+      CHKSIZE(RadioData, 921+(4*9)); // 4 additional sticks
+    #else
+      CHKSIZE(RadioData, 921);
+    #endif
     CHKSIZE(ModelData, 11026);
   #else
     CHKSIZE(RadioData, 903);

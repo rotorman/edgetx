@@ -25,7 +25,13 @@
 #include "board.h"
 #include "storage/yaml/yaml_defs.h"
 
-#define NUM_STICKS                     4
+#if defined(SPACEMOUSE_U3) && defined(SPACEMOUSE_U6)
+  #define NUM_STICKS                   12
+#elif defined(SPACEMOUSE_U3) || defined(SPACEMOUSE_U6)
+  #define NUM_STICKS                   8
+#else
+  #define NUM_STICKS                   4
+#endif
 
 #if defined(EXPORT)
   #define LUA_EXPORT(...)              LEXP(__VA_ARGS__)
