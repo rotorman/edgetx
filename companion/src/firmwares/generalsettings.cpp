@@ -70,12 +70,14 @@ bool GeneralSettings::isSliderAvailable(int index) const
   return sliderConfig[index] != Board::SLIDER_NONE;
 }
 
-GeneralSettings::GeneralSettings()
+void GeneralSettings::clear()
 {
   memset(reinterpret_cast<void *>(this), 0, sizeof(GeneralSettings));
+  init();
+}
 
-  contrast  = 25;
-
+void GeneralSettings::init()
+{
   for (int i = 0; i < CPN_MAX_ANALOGS; ++i) {
     calibMid[i]     = 0x200;
     calibSpanNeg[i] = 0x180;
@@ -247,8 +249,6 @@ GeneralSettings::GeneralSettings()
 
   internalModule = g.profile[g.sessionId()].defaultInternalModule();
 
-  const char * themeName = IS_FLYSKY_NV14(board) ? "FlySky" : "EdgeTX";
-  RadioTheme::init(themeName, themeData);
 }
 
 void GeneralSettings::setDefaultControlTypes(Board::Type board)
@@ -488,14 +488,7 @@ QString GeneralSettings::auxSerialModeToString(int value)
 //  static
 QString GeneralSettings::telemetryBaudrateToString(int value)
 {
-  switch(value) {
-    case 0:
-      return "400000";
-    case 1:
-      return "115200";
-    default:
-      return CPN_STR_UNKNOWN_ITEM;
-  }
+  return telemetryBaudratesList.value(value, CPN_STR_UNKNOWN_ITEM);
 }
 
 //  static
@@ -572,7 +565,7 @@ AbstractStaticItemModel * GeneralSettings::telemetryBaudrateItemModel()
   AbstractStaticItemModel * mdl = new AbstractStaticItemModel();
   mdl->setName(AIM_GS_TELEMETRYBAUDRATE);
 
-  for (int i = 0; i <= 1; i++) {
+  for (int i = 0; i < telemetryBaudratesList.size(); i++) {
     mdl->appendToItemList(telemetryBaudrateToString(i), i);
   }
 
