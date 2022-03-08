@@ -149,7 +149,8 @@ namespace Board {
     HasColorLcd,
     NumFunctionSwitches,
     HasSDCard,
-    HasInternalModuleSupport
+    HasInternalModuleSupport,
+    SportMaxBaudRate
   };
 
   struct SwitchInfo
