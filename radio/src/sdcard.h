@@ -140,6 +140,8 @@ const char * getBasename(const char * path);
   #define ETX_FOURCC 0x3F78746F // etx for Jumper T16
 #elif defined(RADIO_T18)
   #define ETX_FOURCC 0x4078746F // etx for Jumper T18
+#elif defined(PCBDEVKIT)
+  #define ETX_FOURCC 0x3878746F // uses same etx as Radiomaster TX16S
 #elif defined(RADIO_TX16S)
   #define ETX_FOURCC 0x3878746F // etx for Radiomaster TX16S
 #elif defined(PCBX10)

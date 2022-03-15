@@ -70,7 +70,7 @@ void extmodulePpmStart()
   EXTMODULE_TIMER->CR1 &= ~TIM_CR1_CEN; // Stop timer
   EXTMODULE_TIMER->PSC = EXTMODULE_TIMER_FREQ / 2000000 - 1; // 0.5uS (2Mhz)
 
-#if defined(PCBX10) || PCBREV >= 13
+#if defined(PCBX10) || defined(PCBDEVKIT) || PCBREV >= 13
   EXTMODULE_TIMER->CCR3 = GET_MODULE_PPM_DELAY(EXTERNAL_MODULE)*2;
   EXTMODULE_TIMER->CCER = TIM_CCER_CC3E | (GET_MODULE_PPM_POLARITY(EXTERNAL_MODULE) ? TIM_CCER_CC3P : 0);
   EXTMODULE_TIMER->CCMR2 = TIM_CCMR2_OC3M_1 | TIM_CCMR2_OC3M_0; // Force O/P high
@@ -122,7 +122,7 @@ void extmodulePxx1PulsesStart()
   EXTMODULE_TIMER->CR1 &= ~TIM_CR1_CEN;
   EXTMODULE_TIMER->PSC = EXTMODULE_TIMER_FREQ / 2000000 - 1; // 0.5uS (2Mhz)
 
-#if defined(PCBX10) || PCBREV >= 13
+#if defined(PCBX10) || defined(PCBDEVKIT) || PCBREV >= 13
   EXTMODULE_TIMER->CCR3 = 18;
   EXTMODULE_TIMER->CCER = TIM_CCER_CC3E | TIM_CCER_CC3NE | TIM_CCER_CC3P | TIM_CCER_CC3NP;
   EXTMODULE_TIMER->CCMR2 = TIM_CCMR2_OC3M_2 | TIM_CCMR2_OC3M_0; // Force O/P high
@@ -173,7 +173,7 @@ void extmoduleSerialStart()
   EXTMODULE_TIMER->CR1 &= ~TIM_CR1_CEN;
   EXTMODULE_TIMER->PSC = EXTMODULE_TIMER_FREQ / 2000000 - 1; // 0.5uS (2Mhz)
 
-#if defined(PCBX10) || PCBREV >= 13
+#if defined(PCBX10) || defined(PCBDEVKIT) || PCBREV >= 13
   EXTMODULE_TIMER->CCR3 = 0;
   EXTMODULE_TIMER->CCER = TIM_CCER_CC3E | TIM_CCER_CC3P;
   EXTMODULE_TIMER->CCMR2 = TIM_CCMR2_OC3M_2 | TIM_CCMR2_OC3M_0; // Force O/P high
@@ -287,7 +287,7 @@ void extmoduleSendNextFrame()
 {
   switch (moduleState[EXTERNAL_MODULE].protocol) {
     case PROTOCOL_CHANNELS_PPM:
-#if defined(PCBX10) || PCBREV >= 13
+#if defined(PCBX10) || defined(PCBDEVKIT) || PCBREV >= 13
       EXTMODULE_TIMER->CCR3 = GET_MODULE_PPM_DELAY(EXTERNAL_MODULE)*2;
       EXTMODULE_TIMER->CCER = TIM_CCER_CC3E | (GET_MODULE_PPM_POLARITY(EXTERNAL_MODULE) ? TIM_CCER_CC3P : 0);
       EXTMODULE_TIMER->CCR2 = *(extmodulePulsesData.ppm.ptr - 1) - 4000; // 2mS in advance
@@ -384,7 +384,7 @@ void extmoduleSendNextFrame()
       if (PROTOCOL_CHANNELS_SBUS == moduleState[EXTERNAL_MODULE].protocol) {
         // reverse polarity for Sbus if needed
         EXTMODULE_TIMER->CCER =
-#if defined(PCBX10) || PCBREV >= 13
+#if defined(PCBX10) || defined(PCBDEVKIT) || PCBREV >= 13
           TIM_CCER_CC3E | (GET_SBUS_POLARITY(EXTERNAL_MODULE) ? TIM_CCER_CC3P : 0)
 #elif defined(PCBNV14)
           TIM_CCER_CC1E | (GET_SBUS_POLARITY(EXTERNAL_MODULE) ? 0 : TIM_CCER_CC1P)

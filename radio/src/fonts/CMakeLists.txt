@@ -18,7 +18,7 @@ else()
   #set(FONT_BOLD "Ubuntu/Ubuntu-Bold")
 endif()
 
-if(PCB STREQUAL X10)
+if(PCB STREQUAL X10 OR PCB STREQUAL DEVKIT)
   set(FONT_ARGS ${FONT_ARGS} --reverse)
 endif()
 

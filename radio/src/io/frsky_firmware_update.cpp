@@ -302,7 +302,7 @@ const char * FrskyDeviceFirmwareUpdate::sendReqVersion()
 }
 
 // X12S / X10 IXJT = use TX + RX @ 38400 bauds with BOOTCMD pin inverted
-// X10 / X10 ISRM = use TX + RX @ 57600 bauds (no BOOTCMD)
+// X10 / X10 ISRM / DEVKIT = use TX + RX @ 57600 bauds (no BOOTCMD)
 // X9D / X9D+ / X9E / XLite IXJT = use S.PORT @ 57600 bauds
 // XLite PRO / X9Lite / X9D+ 2019 ISRM = use TX + RX @ 57600 bauds
 

@@ -70,6 +70,8 @@ const char * OpenTxEepromInterface::getName()
       return "EdgeTX for Jumper T18";
     case BOARD_RADIOMASTER_TX16S:
       return "EdgeTX for Radiomaster TX16S";
+    case BOARD_DEVKIT_V1:
+      return "EdgeTX for DevKit V1";
     case BOARD_RADIOMASTER_TX12:
       return "EdgeTX for Radiomaster TX12";
     case BOARD_RADIOMASTER_ZORRO:
@@ -762,7 +764,7 @@ int OpenTxFirmware::getCapability(::Capability capability)
     case HasModelsList:
       return IS_FAMILY_HORUS_OR_T16(board);
     case HasFlySkyGimbals:
-      return (IS_RADIOMASTER_TX16S(board) && id.contains("flyskygimbals"));
+      return ((IS_RADIOMASTER_TX16S(board) || IS_DEVKIT_V1(board)) && id.contains("flyskygimbals"));
     default:
       return 0;
   }
@@ -808,7 +810,7 @@ bool OpenTxFirmware::isAvailable(PulsesProtocol proto, int port)
           case PULSES_ACCST_ISRM_D16:
             return IS_ACCESS_RADIO(board, id);
           case PULSES_MULTIMODULE:
-            return id.contains("internalmulti") || IS_RADIOMASTER_TX16S(board) || IS_JUMPER_T18(board) || IS_RADIOMASTER_TX12(board) || IS_JUMPER_TLITE(board);
+            return id.contains("internalmulti") || IS_RADIOMASTER_TX16S(board) || IS_DEVKIT_V1(board) || IS_JUMPER_T18(board) || IS_RADIOMASTER_TX12(board) || IS_JUMPER_TLITE(board);
           case PULSES_AFHDS3:
             return IS_FLYSKY_NV14(board);
           default:
@@ -1450,6 +1452,17 @@ void registerOpenTxFirmwares()
 
   /* Radiomaster TX16S board */
   firmware = new OpenTxFirmware(FIRMWAREID("tx16s"), Firmware::tr("Radiomaster TX16S / SE / Hall / Masterfire"), BOARD_RADIOMASTER_TX16S);
+  addOpenTxFrskyOptions(firmware);
+  addOpenTxRfOptions(firmware, FLEX);
+  static const Firmware::Option opt_bt("bluetooth", Firmware::tr("Support for bluetooth module"));
+  static const Firmware::Option opt_internal_gps("internalgps", Firmware::tr("Support internal GPS"));
+  firmware->addOptionsGroup({opt_bt, opt_internal_gps});
+  firmware->addOption("externalaccessmod", Firmware::tr("Support hardware mod: R9M ACCESS"));
+  firmware->addOption("flyskygimbals", Firmware::tr("Support hardware mod: FlySky Paladin EV Gimbals"));
+  registerOpenTxFirmware(firmware);
+
+  /* DevKit V1 board */
+  firmware = new OpenTxFirmware(FIRMWAREID("devkitv1"), Firmware::tr("DevKit V1"), BOARD_DEVKIT_V1);
   addOpenTxFrskyOptions(firmware);
   addOpenTxRfOptions(firmware, FLEX);
   static const Firmware::Option opt_bt("bluetooth", Firmware::tr("Support for bluetooth module"));
