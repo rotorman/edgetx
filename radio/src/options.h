@@ -101,6 +101,9 @@ static const char * const options[] = {
 #if defined(BIND_KEY)
   "bindkey",
 #endif
+#if defined(T16_touchmod)
+  "t16touchmod",
+#endif
   nullptr //sentinel
 };
 

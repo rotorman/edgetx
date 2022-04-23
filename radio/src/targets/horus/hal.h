@@ -724,6 +724,16 @@
   #define I2C_B1_GPIO_AF                  GPIO_AF_I2C3
   #define I2C_B1_SCL_GPIO_PinSource       GPIO_PinSource7
   #define I2C_B1_SDA_GPIO_PinSource       GPIO_PinSource8
+#elif defined(T16_TOUCHMOD)
+  #define I2C_B1_RCC_AHB1Periph           RCC_AHB1Periph_GPIOB
+  #define I2C_B1_RCC_APB1Periph           RCC_APB1Periph_I2C2
+  #define I2C_B1                          I2C2
+  #define I2C_B1_GPIO                     GPIOB
+  #define I2C_B1_SCL_GPIO_PIN             GPIO_Pin_10  // PB.10
+  #define I2C_B1_SDA_GPIO_PIN             GPIO_Pin_11  // PB.11
+  #define I2C_B1_GPIO_AF                  GPIO_AF_I2C2
+  #define I2C_B1_SCL_GPIO_PinSource       GPIO_PinSource10
+  #define I2C_B1_SDA_GPIO_PinSource       GPIO_PinSource11
 #else
   #define I2C_B1_RCC_AHB1Periph           RCC_AHB1Periph_GPIOB
   #define I2C_B1_RCC_APB1Periph           RCC_APB1Periph_I2C1
