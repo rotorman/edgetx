@@ -48,8 +48,26 @@ fi
 
 : ${SRCDIR:=$(dirname "$(pwd)/$0")/..}
 
+# Generate EDGETX_VERSION_SUFFIX if not already set
+if [[ -z ${EDGETX_VERSION_SUFFIX} ]]; then
+  gh_type=$(echo "$GITHUB_REF" | awk -F / '{print $2}') #heads|tags|pull
+  if [[ $gh_type = "tags" ]]; then
+    # tags: refs/tags/<tag_name>
+    gh_tag=${GITHUB_REF##*/}
+    export EDGETX_VERSION_TAG=$gh_tag
+  elif [[ $gh_type = "pull" ]]; then
+    # pull: refs/pull/<pr_number>/merge
+    gh_pull_number=PR$(echo "$GITHUB_REF" | awk -F / '{print $3}')
+    export EDGETX_VERSION_SUFFIX=$gh_pull_number
+  elif [[ $gh_type = "heads" ]]; then
+    # heads: refs/heads/<branch_name>
+    gh_branch=${GITHUB_REF##*/}
+    export EDGETX_VERSION_SUFFIX=$gh_branch
+  fi
+fi
+
 : ${BUILD_TYPE:=Release}
-: ${COMMON_OPTIONS:="-DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_RULE_MESSAGES=OFF -DDISABLE_COMPANION=YES -Wno-dev "}
+: ${COMMON_OPTIONS:="-DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_RULE_MESSAGES=OFF -Wno-dev "}
 : ${EXTRA_OPTIONS:="$EXTRA_OPTIONS"}
 
 COMMON_OPTIONS+=${EXTRA_OPTIONS}
@@ -147,8 +165,9 @@ do
     esac
 
     cmake ${BUILD_OPTIONS} "${SRCDIR}"
-    make -j"${CORES}" ${FIRMARE_TARGET}
+    cmake --build . --target arm-none-eabi-configure
+    cmake --build arm-none-eabi -j"${CORES}" --target ${FIRMARE_TARGET}
 
-    rm -f CMakeCache.txt
-    mv firmware.bin "../${fw_name}"
+    rm -f CMakeCache.txt arm-none-eabi/CMakeCache.txt
+    mv arm-none-eabi/firmware.bin "../${fw_name}"
 done
