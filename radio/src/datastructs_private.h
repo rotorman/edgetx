@@ -914,11 +914,12 @@ PACK(struct RadioData {
   GYRO_FIELDS
 
   NOBACKUP(int8_t   uartSampleMode:2); // See UartSampleModes
+  NOBACKUP(uint8_t  supportMods:1);
 #if defined(STICK_DEAD_ZONE)
   NOBACKUP(uint8_t  stickDeadZone:3);
-  NOBACKUP(uint8_t  spare2:3 SKIP);
+  NOBACKUP(uint8_t  spare2:2 SKIP);
 #else
-  NOBACKUP(uint8_t  spare2:6 SKIP);
+  NOBACKUP(uint8_t  spare2:5 SKIP);
 #endif
 });
 

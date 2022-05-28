@@ -407,10 +407,14 @@ bool isSerialModeAvailable(uint8_t port_nr, int mode)
 #if !defined(SPACEMOUSE)
   if (mode == UART_MODE_SPACEMOUSE)
     return false;
-#elif defined(USB_SERIAL)
-  // SPACEMOUSE is not supported on VCP
-  if (port_nr == SP_VCP && mode == UART_MODE_SPACEMOUSE)
+#else
+  if (!g_eeGeneral.supportMods && mode == UART_MODE_SPACEMOUSE)
     return false;
+  #if defined(USB_SERIAL)
+    // SPACEMOUSE is not supported on VCP
+    if (port_nr == SP_VCP && mode == UART_MODE_SPACEMOUSE)
+      return false;
+  #endif
 #endif
 
 #if !defined(LUA)

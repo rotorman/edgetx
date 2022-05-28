@@ -403,7 +403,8 @@ static const struct YamlNode struct_RadioData[] = {
   YAML_SIGNED( "gyroMax", 8 ),
   YAML_SIGNED( "gyroOffset", 8 ),
   YAML_SIGNED( "uartSampleMode", 2 ),
-  YAML_PADDING( 6 ),
+  YAML_UNSIGNED( "supportMods", 1 ),
+  YAML_PADDING( 5 ),
   YAML_END
 };
 static const struct YamlNode struct_unsigned_8[] = {

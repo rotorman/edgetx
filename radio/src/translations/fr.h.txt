@@ -1239,6 +1239,7 @@
 #define TR_JITTER_FILTER               "Filtre ADC"
 #define TR_DEAD_ZONE                   "Dead zone"
 #define TR_RTC_CHECK                   TR("Vérif. RTC", "Vérif. pile RTC")
+#define TR_SUPPORT_MODS                "Support mods"
 #define TR_AUTH_FAILURE                "Auth-failure"
 #define TR_RACING_MODE                 "Racing mode"
 

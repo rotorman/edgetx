@@ -1210,6 +1210,7 @@
 #define TR_JITTER_FILTER               "ADC Filtr"
 #define TR_DEAD_ZONE                   "Dead zone"
 #define TR_RTC_CHECK                   TR("Check RTC", "Check RTC voltage")
+#define TR_SUPPORT_MODS                "Support mods"
 #define TR_AUTH_FAILURE                "Auth-failure"
 #define TR_RACING_MODE                 "Racing mode"
 

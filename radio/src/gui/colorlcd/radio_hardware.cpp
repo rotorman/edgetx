@@ -458,7 +458,11 @@ void RadioHardwarePage::build(FormWindow * window)
 
   // RTC Batt check enable
   new StaticText(window, grid.getLabelSlot(), STR_RTC_CHECK, 0, COLOR_THEME_PRIMARY1);
-  new CheckBox(window, grid.getFieldSlot(1,0), GET_SET_INVERTED(g_eeGeneral.disableRtcWarning ));
+  new CheckBox(window, grid.getFieldSlot(1,0), GET_SET_INVERTED(g_eeGeneral.disableRtcWarning));
+  grid.nextLine();
+
+  new StaticText(window, grid.getLabelSlot(), STR_SUPPORT_MODS, 0, COLOR_THEME_PRIMARY1);
+  new CheckBox(window, grid.getFieldSlot(1,0), GET_SET_DEFAULT(g_eeGeneral.supportMods));
   grid.nextLine();
 
 #if defined(HARDWARE_INTERNAL_MODULE)
