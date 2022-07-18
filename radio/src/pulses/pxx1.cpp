@@ -49,11 +49,11 @@ void Pxx1Pulses<PxxTransport>::addExtraFlags(uint8_t module)
   // Ext. flag (holds antenna selection on Horus internal module, 0x00 otherwise)
   uint8_t extraFlags = 0;
 
-#if defined(EXTERNAL_ANTENNA)
-  if (module == INTERNAL_MODULE && isExternalAntennaEnabled()) {
+//#if defined(EXTERNAL_ANTENNA)
+//  if (module == INTERNAL_MODULE && isExternalAntennaEnabled()) {
     extraFlags |= (1 << 0);
-  }
-#endif
+//  }
+//#endif
 
   extraFlags |= (g_model.moduleData[module].pxx.receiverTelemetryOff << 1);
   extraFlags |= (g_model.moduleData[module].pxx.receiverHigherChannels << 2);
