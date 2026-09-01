@@ -47,6 +47,10 @@
 #include "telemetry/crossfire.h"
 #endif
 
+#if defined(MAVLINK)
+#include "mavlink_settings.h"
+#endif
+
 #if defined(AFHDS2)
 #include "afhds2a_settings.h"
 #endif
@@ -144,6 +148,11 @@ class ModuleWindow : public Window
   #if defined(CROSSFIRE)
     else if (isModuleCrossfire(moduleIdx)) {
       modOpts = new CrossfireSettings(this, grid, moduleIdx);
+    }
+  #endif
+  #if defined(MAVLINK)
+    else if (isModuleMavlink(moduleIdx)) {
+      modOpts = new MavlinkSettings(this, grid, moduleIdx);
     }
   #endif
   #if defined(AFHDS2)

@@ -188,6 +188,10 @@ void handleUsbConnection()
 #if defined(USB_SERIAL)
       else if (getSelectedUsbMode() == USB_SERIAL_MODE) {
         serialInit(SP_VCP, serialGetMode(SP_VCP));
+#if defined(HARDWARE_EXTERNAL_MODULE)
+        if (serialGetMode(SP_VCP) == UART_MODE_EXT_MODULE)
+          restartModuleAsync(EXTERNAL_MODULE, 10);
+#endif
       }
 #endif
 
@@ -209,6 +213,10 @@ void handleUsbConnection()
 #endif
     } else if (getSelectedUsbMode() == USB_SERIAL_MODE) {
       serialStop(SP_VCP);
+#if defined(USB_SERIAL) && defined(HARDWARE_EXTERNAL_MODULE)
+      if (serialGetMode(SP_VCP) == UART_MODE_EXT_MODULE)
+        restartModuleAsync(EXTERNAL_MODULE, 10);
+#endif
     }
     TRACE("reset selected USB mode");
     setSelectedUsbMode(USB_UNSELECTED_MODE);
